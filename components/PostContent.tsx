@@ -1,6 +1,7 @@
 import { ImageSourcePropType, StyleSheet, Text, View } from "react-native";
 import PostActions from "./PostActions";
 import PostImage from "./PostImage";
+import PostTags from "./PostTags";
 import ProfileBar from "./ProfileBar";
 
 type Props = {
@@ -12,6 +13,7 @@ type Props = {
   postTitle: string;
   liked: boolean;
   saved: boolean;
+  tags: Array<String>;
 };
 
 export default function postContent({
@@ -23,6 +25,7 @@ export default function postContent({
   postTitle,
   liked,
   saved,
+  tags,
 }: Props) {
   const navAction = () => {};
   return (
@@ -36,6 +39,7 @@ export default function postContent({
           username={username}
         />
         <Text>{description}</Text>
+        <PostTags tags={tags}></PostTags>
         <PostActions navOnClick={navAction} liked={liked} saved={saved} />
       </View>
     </View>
