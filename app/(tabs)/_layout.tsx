@@ -5,6 +5,8 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 
 
+import Ionicons from "@expo/vector-icons/Ionicons";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 export default function TabLayout() {
   return (
@@ -20,7 +22,11 @@ export default function TabLayout() {
           title: 'Home',
           headerShown: false,
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'home-sharp' : 'home-sharp'} color={color} size={24} />
+            <Ionicons
+              name={focused ? "home-sharp" : "home-sharp"}
+              color={color}
+              size={24}
+            />
           ),
         }}
       />
@@ -40,7 +46,11 @@ export default function TabLayout() {
           title: 'Profile',
           headerShown: false,
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'person-sharp' : 'person-sharp'} color={color} size={24}/>
+            <Ionicons
+              name={focused ? "person-sharp" : "person-sharp"}
+              color={color}
+              size={24}
+            />
           ),
         }}
       />
