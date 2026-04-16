@@ -14,6 +14,7 @@ type Props = {
   liked: boolean;
   saved: boolean;
   tags: Array<String>;
+  openCommentsAction: () => void;
 };
 
 export default function postContent({
@@ -26,6 +27,7 @@ export default function postContent({
   liked,
   saved,
   tags,
+  openCommentsAction,
 }: Props) {
   const navAction = () => {};
   return (
@@ -40,7 +42,12 @@ export default function postContent({
         />
         <Text>{description}</Text>
         <PostTags tags={tags}></PostTags>
-        <PostActions navOnClick={navAction} liked={liked} saved={saved} />
+        <PostActions
+          navOnClick={navAction}
+          liked={liked}
+          saved={saved}
+          modelOn={openCommentsAction}
+        />
       </View>
     </View>
   );
