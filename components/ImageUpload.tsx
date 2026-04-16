@@ -15,7 +15,7 @@ export default function ImageViewer({
   const imageSource = selectedImage ? { uri: selectedImage } : imgSource;
 
   return (
-    <Pressable onPress={onPress}>
+    <Pressable style={styles.imageContainer} onPress={onPress}>
       <Image source={imageSource} style={styles.image} />
     </Pressable>
   );
@@ -23,9 +23,15 @@ export default function ImageViewer({
 
 const styles = StyleSheet.create({
   image: {
-    width: 320,
-    height: 360,
-    borderRadius: 17,
+    aspectRatio: 1 / 1,
+    borderRadius: 15,
   },
-  imageContainer: {},
+  imageContainer: {
+    width: "80%",
+    backgroundColor: "white",
+    borderColor: "#000000ff",
+    borderWidth: 2,
+    borderRadius: 20,
+    padding: 5,
+  },
 });
