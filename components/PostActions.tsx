@@ -5,23 +5,15 @@ import SaveButton from "./SaveButton";
 
 type Props = {
   navOnClick: () => void;
-  likeOnClick: () => void;
-  saveOnClick: () => void;
   liked: boolean;
   saved: boolean;
 };
 
-export default function PostActions({
-  navOnClick,
-  likeOnClick,
-  saveOnClick,
-  liked,
-  saved,
-}: Props) {
+export default function PostActions({ navOnClick, liked, saved }: Props) {
   return (
     <View style={styles.actionContainer}>
-      <SaveButton onPress={saveOnClick} saved={saved} />
-      <LikeButton liked={liked} onPress={likeOnClick} />
+      <SaveButton saved={saved} />
+      <LikeButton liked={liked} />
       <IconButton icon="location-arrow" onPress={navOnClick} />
     </View>
   );

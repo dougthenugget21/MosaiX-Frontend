@@ -10,8 +10,6 @@ type Props = {
   userTitle: string;
   username: string;
   postTitle: string;
-  likedAction: () => void;
-  savedAction: () => void;
   liked: boolean;
   saved: boolean;
 };
@@ -23,8 +21,6 @@ export default function postContent({
   userTitle,
   username,
   postTitle,
-  likedAction,
-  savedAction,
   liked,
   saved,
 }: Props) {
@@ -40,13 +36,7 @@ export default function postContent({
           username={username}
         />
         <Text>{description}</Text>
-        <PostActions
-          likeOnClick={likedAction}
-          saveOnClick={savedAction}
-          navOnClick={navAction}
-          liked={liked}
-          saved={saved}
-        />
+        <PostActions navOnClick={navAction} liked={liked} saved={saved} />
       </View>
     </View>
   );
