@@ -1,6 +1,6 @@
 // Import the required files for this component
 import { Image } from "expo-image";
-import { ImageSourcePropType, StyleSheet } from "react-native";
+import { ImageSourcePropType, StyleSheet, View } from "react-native";
 
 //
 type Props = {
@@ -8,14 +8,21 @@ type Props = {
 };
 
 export default function PostImage({ imgSource }: Props) {
-  return <Image source={imgSource} style={styles.image} />;
+  return (
+    <View style={styles.imageContainer}>
+      <Image source={imgSource} style={styles.image} />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
   image: {
-    borderRadius: 12,
-    width: "auto",
+    objectFit: "cover",
     aspectRatio: "1/1",
-    maxHeight: 300,
+    borderRadius: 14,
+  },
+  imageContainer: {
+    width: "100%",
+    aspectRatio: "1/1",
   },
 });
