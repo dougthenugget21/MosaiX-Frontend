@@ -18,11 +18,16 @@ export default function LikeButton({ liked }: Props) {
   };
 
   return (
-    <Pressable style={styles.iconButton} onPress={toggleLiked}>
+    <Pressable
+      style={styles.iconButton}
+      onPress={toggleLiked}
+      accessibilityRole="button"
+    >
       <Fontisto
         name={isLiked ? "heart" : "heart-alt"}
         size={24}
         color={isLiked ? "red" : "black"}
+        testID="icon"
       />
     </Pressable>
   );
