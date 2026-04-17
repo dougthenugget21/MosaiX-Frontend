@@ -1,23 +1,32 @@
 import { Tabs } from 'expo-router';
 
 import Ionicons from '@expo/vector-icons/Ionicons';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 
+
+import Ionicons from "@expo/vector-icons/Ionicons";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 export default function TabLayout() {
   return (
     <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: '#ffd33d',
-      }}
-    >
+  screenOptions={{
+    tabBarActiveTintColor: '#3D5A80',
+    tabBarInactiveTintColor: '#3a3f46',
+  }}
+>
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
+          headerShown: false,
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'home-sharp' : 'home-sharp'} color={color} size={24} />
+            <Ionicons
+              name={focused ? "home-sharp" : "home-sharp"}
+              color={color}
+              size={24}
+            />
           ),
         }}
       />
@@ -25,8 +34,9 @@ export default function TabLayout() {
         name="create"
         options={{
           title: 'Create',
+          headerShown: false,
           tabBarIcon: ({ color, focused }) => (
-            <MaterialCommunityIcons name={focused ? 'close-network' : 'close-network'} size={24} color={color} />
+            <MaterialIcons name={focused ? 'add-location-alt' : 'add-location-alt'} size={24} color={color} />
           ),
         }}
       />
@@ -34,8 +44,13 @@ export default function TabLayout() {
         name="profile"
         options={{
           title: 'Profile',
+          headerShown: false,
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'person-sharp' : 'person-sharp'} color={color} size={24}/>
+            <Ionicons
+              name={focused ? "person-sharp" : "person-sharp"}
+              color={color}
+              size={24}
+            />
           ),
         }}
       />
