@@ -2,12 +2,12 @@ import CommentViewer from "@/components/CommentViewer";
 import PostContent from "@/components/PostContent";
 import { useState } from "react";
 import {
-  FlatList,
-  ImageSourcePropType,
-  StyleSheet,
-  TextInput,
-  TextInputChangeEvent,
-  View,
+    FlatList,
+    ImageSourcePropType,
+    StyleSheet,
+    TextInput,
+    TextInputChangeEvent,
+    View,
 } from "react-native";
 const PlaceholderImage = require("@/assets/images/flowers.jpg");
 const PlaceholderImageTwo = require("@/assets/images/bad-house.jpg");
@@ -96,6 +96,7 @@ export default function Index() {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+        margin: 4,
       }}
     >
       {/* Filter Bar*/}
@@ -137,7 +138,7 @@ const styles = StyleSheet.create({
     padding: 5,
     backgroundColor: "white",
     borderRadius: 6,
-    margin: 6,
-    marginTop: 8,
+    margin: 8,
+    marginTop: 10,
   },
 });
