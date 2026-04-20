@@ -1,6 +1,5 @@
 import ImageViewer from "@/components/ImageUpload";
 import SubmitButton from "@/components/SubmitButton";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
 import * as Location from "expo-location";
 import { useState } from "react";
@@ -81,7 +80,7 @@ export default function Create() {
       if (imageFile !== undefined) {
         const imageUrl = await uploadFile(imageFile);
         const loc = await getCurrentLocation();
-        const profileID = await AsyncStorage.getItem("profile_id");
+        const profileID = 2; //await AsyncStorage.getItem("profile_id");
         const postBody = JSON.stringify({
           profile_id: profileID,
           photo_url: imageUrl,
@@ -151,7 +150,7 @@ export default function Create() {
           placeholder={`Description...`}
           placeholderTextColor={"#6c6c6cff"}
         />
-        <SubmitButton onPress={testing} text="Submit" />
+        <SubmitButton onPress={submit} text="Submit" />
       </View>
     </ScrollView>
   );
