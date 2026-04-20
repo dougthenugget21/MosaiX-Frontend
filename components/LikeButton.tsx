@@ -1,13 +1,14 @@
+import Post from "@/assets/Post";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import { useState } from "react";
 import { Pressable, StyleSheet } from "react-native";
 
 type Props = {
-  liked: boolean;
+  post: Post;
 };
 
-export default function LikeButton({ liked }: Props) {
-  const [isLiked, setIsLiked] = useState(liked);
+export default function LikeButton({ post }: Props) {
+  const [isLiked, setIsLiked] = useState(post.liked);
 
   const toggleLiked = () => {
     if (isLiked) {

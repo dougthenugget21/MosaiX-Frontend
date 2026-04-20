@@ -1,18 +1,17 @@
-import { ImageSourcePropType, StyleSheet, Text, View } from "react-native";
+import { UserData } from "@/assets/User";
+import { StyleSheet, Text, View } from "react-native";
 import ProfileIcon from "./ProfileIcon";
 
 type Props = {
-  imgSource: ImageSourcePropType;
-  title: string;
-  username: string;
+  profile: UserData;
 };
 
-export default function ProfileBar({ imgSource, title, username }: Props) {
+export default function ProfileBar({ profile }: Props) {
   return (
     <View style={styles.profileBar}>
-      <ProfileIcon imgSource={imgSource} />
-      <Text style={styles.profileTitle}>{title} </Text>
-      <Text style={styles.profileName}>{username}</Text>
+      <ProfileIcon imgSource={profile.image} />
+      <Text style={styles.profileTitle}>{profile.title} </Text>
+      <Text style={styles.profileName}>{profile.name}</Text>
     </View>
   );
 }

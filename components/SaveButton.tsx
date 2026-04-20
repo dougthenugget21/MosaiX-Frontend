@@ -1,13 +1,14 @@
+import Post from "@/assets/Post";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useState } from "react";
 import { Pressable, StyleSheet } from "react-native";
 
 type Props = {
-  saved: boolean;
+  post: Post;
 };
 
-export default function SaveButton({ saved }: Props) {
-  const [isSaved, setIsSaved] = useState(saved);
+export default function SaveButton({ post }: Props) {
+  const [isSaved, setIsSaved] = useState(post.saved);
 
   const toggleSaved = () => {
     if (isSaved) {
@@ -16,6 +17,7 @@ export default function SaveButton({ saved }: Props) {
       setIsSaved(true);
     }
   };
+
   return (
     <Pressable style={styles.iconButton} onPress={toggleSaved}>
       <FontAwesome

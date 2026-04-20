@@ -1,8 +1,10 @@
+import { ImageSourcePropType } from "react-native";
 import { UserData } from "./User";
-type postObj = {
+
+export type postObj = {
   id: number;
-  postImgSource: string;
-  postTitle: string;
+  image: ImageSourcePropType;
+  title: string;
   user: UserData;
   description: string;
   latitude: number;
@@ -11,7 +13,8 @@ type postObj = {
   saved: boolean;
   tags: Array<string>;
 };
-class Post {
+
+export default class Post {
   id: number;
   user: UserData;
   title: string;
@@ -21,10 +24,11 @@ class Post {
   tags: Array<string>;
   latitude: number;
   longitude: number;
+  image: ImageSourcePropType;
 
   constructor(data: postObj) {
     this.id = data.id;
-    this.title = data.postTitle;
+    this.title = data.title;
     this.description = data.description;
     this.liked = data.liked;
     this.saved = data.saved;
@@ -32,6 +36,7 @@ class Post {
     this.latitude = data.latitude;
     this.longitude = data.longitude;
     this.user = data.user;
+    this.image = data.image;
   }
 
   /**
@@ -53,5 +58,11 @@ class Post {
    */
   public deletePost(loggedInUserId: number) {
     // https request goes here
+  }
+  /**
+   * fetchComments
+   */
+  public fetchComments() {
+    // http request goes here
   }
 }
