@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1776430186426" clover="3.2.0">
+  <project timestamp="1776430186426" name="All files">
+    <metrics statements="17" coveredstatements="8" conditionals="6" coveredconditionals="1" methods="4" coveredmethods="1" elements="27" coveredelements="10" complexity="0" loc="17" ncloc="17" packages="1" files="1" classes="1"/>
+    <file name="profile.tsx" path="C:\Users\AcademyStudent\OneDrive - La Fosse Associates\Desktop\Week 8\MosaiX\MosaiX-Frontend\app\(tabs)\profile.tsx">
+      <metrics statements="17" coveredstatements="8" conditionals="6" coveredconditionals="1" methods="4" coveredmethods="1"/>
+      <line num="16" count="6" type="stmt"/>
+      <line num="17" count="6" type="stmt"/>
+      <line num="18" count="6" type="stmt"/>
+      <line num="19" count="6" type="stmt"/>
+      <line num="20" count="6" type="stmt"/>
+      <line num="22" count="6" type="stmt"/>
+      <line num="23" count="0" type="stmt"/>
+      <line num="24" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="25" count="0" type="stmt"/>
+      <line num="26" count="0" type="stmt"/>
+      <line num="29" count="0" type="stmt"/>
+      <line num="35" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="36" count="0" type="stmt"/>
+      <line num="40" count="6" type="stmt"/>
+      <line num="69" count="0" type="stmt"/>
+      <line num="73" count="0" type="stmt"/>
+      <line num="82" count="1" type="stmt"/>
+    </file>
+  </project>
+</coverage>
