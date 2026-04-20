@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     width: "80%",
     backgroundColor: "white",
-    borderColor: "#000000ff",
+    borderColor: "#ffffffff",
     borderWidth: 2,
     borderRadius: 20,
     padding: 5,
