@@ -1,12 +1,26 @@
+import PostComment from "@/assets/logic/PostComment";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { PropsWithChildren } from "react";
-import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
-type Props = PropsWithChildren<{
+import {
+  FlatList,
+  Modal,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+
+import Comment from "./Comment";
+type Props = {
   isVisible: boolean;
   onClose: () => void;
-}>;
+  commentList: PostComment[];
+};
 
-export default function CommentViewer({ isVisible, onClose, children }: Props) {
+export default function CommentViewer({
+  isVisible,
+  onClose,
+  commentList,
+}: Props) {
   return (
     <View>
       <Modal animationType="slide" transparent={true} visible={isVisible}>
@@ -17,8 +31,11 @@ export default function CommentViewer({ isVisible, onClose, children }: Props) {
               <MaterialIcons name="close" color="black" size={22} />
             </Pressable>
           </View>
+          <FlatList
+            data={commentList}
+            renderItem={({ item }) => <Comment comment={item} />}
+          />
         </View>
-        {children}
       </Modal>
     </View>
   );
@@ -26,9 +43,9 @@ export default function CommentViewer({ isVisible, onClose, children }: Props) {
 
 const styles = StyleSheet.create({
   modalContent: {
-    height: "25%",
+    height: "50%",
     width: "100%",
-    backgroundColor: "#25292e",
+    backgroundColor: "#ebedef",
     borderTopRightRadius: 18,
     borderTopLeftRadius: 18,
     position: "absolute",
@@ -36,7 +53,7 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     height: "16%",
-    backgroundColor: "#464C55",
+    backgroundColor: "#d7d7d7",
     borderTopRightRadius: 10,
     borderTopLeftRadius: 10,
     paddingHorizontal: 20,
@@ -45,7 +62,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   title: {
-    color: "#fff",
+    color: "#1f1d1d",
     fontSize: 16,
   },
 });

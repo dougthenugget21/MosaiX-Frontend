@@ -1,4 +1,4 @@
-import Post from "@/assets/Post";
+import Post from "@/assets/logic/Post";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useState } from "react";
 import { Pressable, StyleSheet } from "react-native";
@@ -11,6 +11,7 @@ export default function SaveButton({ post }: Props) {
   const [isSaved, setIsSaved] = useState(post.saved);
 
   const toggleSaved = () => {
+    post.toggleSavedPost(1);
     if (isSaved) {
       setIsSaved(false);
     } else {

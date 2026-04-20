@@ -1,4 +1,4 @@
-import Post from "@/assets/Post";
+import Post from "@/assets/logic/Post";
 import { StyleSheet, View } from "react-native";
 import CommentButton from "./CommentButton";
 import IconButton from "./IconButton";
@@ -7,7 +7,7 @@ import SaveButton from "./SaveButton";
 
 type Props = {
   navOnClick: () => void;
-  modelOn: () => void;
+  modelOn: (post: Post) => void;
   post: Post;
 };
 

@@ -1,4 +1,4 @@
-import Post from "@/assets/Post";
+import Post from "@/assets/logic/Post";
 import { StyleSheet, Text, View } from "react-native";
 import PostActions from "./PostActions";
 import PostImage from "./PostImage";
@@ -7,7 +7,7 @@ import ProfileBar from "./ProfileBar";
 
 type Props = {
   post: Post;
-  openCommentsAction: () => void;
+  openCommentsAction: (post: Post) => void;
 };
 
 export default function postContent({ post, openCommentsAction }: Props) {

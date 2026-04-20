@@ -1,4 +1,4 @@
-import { UserData } from "@/assets/User";
+import { UserData } from "@/assets/logic/User";
 import { StyleSheet, Text, View } from "react-native";
 import ProfileIcon from "./ProfileIcon";
 
@@ -24,8 +24,8 @@ const styles = StyleSheet.create({
   profileBar: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between",
-    backgroundColor: "#ffffff",
+    justifyContent: "flex-start",
+    backgroundColor: "#f5f0f0",
     padding: 8,
     borderRadius: 4,
     alignItems: "center",
