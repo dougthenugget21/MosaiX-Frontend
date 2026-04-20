@@ -1,10 +1,12 @@
 import ImageViewer from "@/components/ImageUpload";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
 import * as Location from "expo-location";
 import { useState } from "react";
 import {
   Button,
   Dimensions,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -13,9 +15,9 @@ import {
 
 const { width, height } = Dimensions.get("window");
 
-const cloudinaryUrl = process.env.CLOUDINARY_URL;
+const profileID = await AsyncStorage.getItem("profile_id");
 
-export default function Index() {
+export default function Create() {
   const [selectImage, setSelectedImage] = useState<string | undefined>(
     undefined,
   );
@@ -58,50 +60,62 @@ export default function Index() {
   };
 
   const uploadFile = async (imageFile: File) => {
-    console.log(`Uploading ${imageFile}`);
-
     const formData = new FormData();
     formData.append("file", imageFile);
     formData.append("upload_preset", "mosaix");
 
     const response = await fetch(
-      "https://api.cloudinary.com/v1_1/dxlpim9vf/upload",
+      `https://api.cloudinary.com/v1_1/${process.env.EXPO_PUBLIC_CLOUDINARY_KEY}/upload`,
       {
         method: "post",
         body: formData,
       },
     );
 
-    console.log(response);
     const image = await response.json();
-    console.log(image);
 
     return image.url;
   };
 
   const submit = async () => {
-    console.log(cloudinaryUrl);
-
-    console.log(imageFile);
-
-    const loc = await getCurrentLocation();
-    console.log(`Lat: ${loc.coords.latitude}, Long: ${loc.coords.longitude}`);
-
     if (imageFile !== undefined) {
-      const imageUrl = await uploadFile(imageFile);
-      console.log(imageUrl);
+      //const imageUrl = await uploadFile(imageFile);
+      const loc = await getCurrentLocation();
+
+      const postBody = JSON.stringify({
+        profile_id: profileID,
+        photo_url:
+          "http://res.cloudinary.com/dxlpim9vf/image/upload/v1776677983/kcltk4ieepy9lf3pjyfr.jpg",
+        longitude: loc.coords.longitude,
+        latitude: loc.coords.latitude,
+        post_title: titleText,
+        post_desc: descText,
+        tags: tagText.toLowerCase(),
+      });
+
+      const response = await fetch(
+        `${process.env.EXPO_PUBLIC_CREATE_POST_URL}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: postBody,
+        },
+      );
+
+      const data = await response.json();
+    } else {
+      alert("You need to upload an image to create a post");
     }
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: "center",
-      }}
-    >
+    <ScrollView contentContainerStyle={styles.contentContainer}>
       <View style={styles.topContainer}>
-        <Text style={styles.header}>Create your own Post</Text>
+        <Text role="heading" style={styles.header}>
+          Create your own Post
+        </Text>
         <TextInput
           style={styles.innerBox}
           maxLength={255}
@@ -118,7 +132,7 @@ export default function Index() {
         style={styles.innerBox}
         maxLength={255}
         onChangeText={(newText) => setTagText(newText)}
-        placeholder={`Insert tags, e.g: History, Nature, Food...`}
+        placeholder={`Insert tags, e.g: History,Nature,Food...`}
       />
       <TextInput
         multiline
@@ -128,12 +142,16 @@ export default function Index() {
         onChangeText={(newText) => setDescText(newText)}
         placeholder={`Description...`}
       />
-      <Button title={"Submit"} onPress={submit} />
-    </View>
+      <Button testID="submitButton" title={"Submit"} onPress={submit} />
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  contentContainer: {
+    flex: 1,
+    alignItems: "center",
+  },
   header: {
     fontSize: 25,
     fontWeight: 500,
@@ -151,7 +169,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#547AA5",
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
-    paddingBottom: width * 0.1,
+    paddingBottom: 40,
     marginBottom: 15,
   },
   innerBox: {
@@ -162,5 +180,6 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 5,
     width: "80%",
+    minHeight: 50,
   },
 });

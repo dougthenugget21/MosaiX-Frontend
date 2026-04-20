@@ -5,18 +5,20 @@ type Props = {
   imgSource: ImageSourcePropType;
   selectedImage?: string;
   onPress?: () => void;
+  role?: string;
 };
 
 export default function ImageViewer({
   imgSource,
   selectedImage,
   onPress,
+  role,
 }: Props) {
   const imageSource = selectedImage ? { uri: selectedImage } : imgSource;
 
   return (
     <Pressable style={styles.imageContainer} onPress={onPress}>
-      <Image source={imageSource} style={styles.image} />
+      <Image testID="uploadImage" source={imageSource} style={styles.image} />
     </Pressable>
   );
 }
