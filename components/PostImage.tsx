@@ -1,10 +1,10 @@
 // Import the required files for this component
 import { Image } from "expo-image";
-import { ImageSourcePropType, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 //
 type Props = {
-  imgSource: ImageSourcePropType;
+  imgSource: string;
 };
 
 export default function PostImage({ imgSource }: Props) {

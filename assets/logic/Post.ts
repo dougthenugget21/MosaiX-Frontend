@@ -1,9 +1,8 @@
-import { ImageSourcePropType } from "react-native";
 import { UserData } from "./User";
 
 export type postObj = {
   id: number;
-  image: ImageSourcePropType;
+  image: string;
   title: string;
   user: UserData;
   description: string;
@@ -24,7 +23,7 @@ export default class Post {
   tags: Array<string>;
   latitude: number;
   longitude: number;
-  image: ImageSourcePropType;
+  image: string;
 
   constructor(data: postObj) {
     this.id = data.id;

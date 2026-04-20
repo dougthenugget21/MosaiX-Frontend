@@ -1,7 +1,9 @@
-import getExampleData from "@/assets/Example";
+import getPostsByLocation from "@/assets/logic/getPostsByLocation";
+//import getExampleData from "@/assets/logic/Example";
+import Post from "@/assets/logic/Post";
 import CommentViewer from "@/components/CommentViewer";
 import PostContent from "@/components/PostContent";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FlatList,
   StyleSheet,
@@ -10,19 +12,26 @@ import {
   View,
 } from "react-native";
 
-export default function Index() {
-  const data = getExampleData();
+export default function Feed() {
   // Creating states to be tracked
   const [search, setSearch] = useState("");
-  const [filteredData, setFilteredData] = useState(data);
+  const [data, setData] = useState<Post[]>([]);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const temp = await getPostsByLocation();
+      setData(temp);
+    };
+    fetchData();
+  }, []);
 
   // handlers for states
   const handleSearch = (e: TextInputChangeEvent) => {
     const term = e.nativeEvent.text;
     setSearch(term);
     if (term === "") {
-      setFilteredData(data);
+      setData(data);
     } else {
       const filteredArray = data.filter((item) => {
         const results = item.tags.filter((tag) => tag.includes(term));
@@ -32,7 +41,7 @@ export default function Index() {
           return false;
         }
       });
-      setFilteredData(filteredArray);
+      setData(filteredArray);
     }
   };
 
@@ -61,7 +70,7 @@ export default function Index() {
         onChange={handleSearch}
       />
       <FlatList
-        data={filteredData}
+        data={data}
         renderItem={({ item }) => (
           <PostContent post={item} openCommentsAction={openComments} />
         )}

@@ -1,4 +1,4 @@
-import { UserData } from "@/assets/User";
+import { UserData } from "@/assets/logic/User";
 import { StyleSheet, Text, View } from "react-native";
 import ProfileIcon from "./ProfileIcon";
 

@@ -1,4 +1,4 @@
-import Post from "@/assets/Post";
+import Post from "@/assets/logic/Post";
 import { StyleSheet, Text, View } from "react-native";
 import PostActions from "./PostActions";
 import PostImage from "./PostImage";

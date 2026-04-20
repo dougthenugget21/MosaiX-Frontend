@@ -1,4 +1,4 @@
-import Post from "@/assets/Post";
+import Post from "@/assets/logic/Post";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Pressable, StyleSheet } from "react-native";
 
