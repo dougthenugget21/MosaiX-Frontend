@@ -1,12 +1,13 @@
+import Post from "@/assets/Post";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Pressable, StyleSheet } from "react-native";
 
 type Props = {
-  id: number;
+  post: Post;
   setModal: () => void;
 };
 
-export default function CommentButton({ id, setModal }: Props) {
+export default function CommentButton({ post, setModal }: Props) {
   return (
     <Pressable style={styles.iconButton} onPress={setModal}>
       <FontAwesome name="comment-o" size={24} color="black" />

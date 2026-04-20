@@ -1,3 +1,4 @@
+import Post from "@/assets/Post";
 import { StyleSheet, View } from "react-native";
 import CommentButton from "./CommentButton";
 import IconButton from "./IconButton";
@@ -7,21 +8,15 @@ import SaveButton from "./SaveButton";
 type Props = {
   navOnClick: () => void;
   modelOn: () => void;
-  liked: boolean;
-  saved: boolean;
+  post: Post;
 };
 
-export default function PostActions({
-  navOnClick,
-  modelOn,
-  liked,
-  saved,
-}: Props) {
+export default function PostActions({ navOnClick, modelOn, post }: Props) {
   return (
     <View style={styles.actionContainer}>
-      <CommentButton id={1} setModal={modelOn} />
-      <SaveButton saved={saved} />
-      <LikeButton liked={liked} />
+      <CommentButton post={post} setModal={modelOn} />
+      <SaveButton post={post} />
+      <LikeButton post={post} />
       <IconButton icon="location-arrow" onPress={() => {}} />
     </View>
   );
