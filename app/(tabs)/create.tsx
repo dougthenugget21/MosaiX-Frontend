@@ -1,21 +1,10 @@
 import ImageViewer from "@/components/ImageUpload";
+import SubmitButton from "@/components/SubmitButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
 import * as Location from "expo-location";
 import { useState } from "react";
-import {
-  Button,
-  Dimensions,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
-
-const { width, height } = Dimensions.get("window");
-
-const profileID = await AsyncStorage.getItem("profile_id");
+import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 
 export default function Create() {
   const [selectImage, setSelectedImage] = useState<string | undefined>(
@@ -78,108 +67,130 @@ export default function Create() {
   };
 
   const submit = async () => {
-    if (imageFile !== undefined) {
-      //const imageUrl = await uploadFile(imageFile);
-      const loc = await getCurrentLocation();
+    try {
+      if (!titleText) {
+        throw new Error("You must add a title to create a post");
+      }
+      if (!tagText) {
+        throw new Error("You must add at least one tag to create a post");
+      }
+      if (!descText) {
+        throw new Error("You must add a description to create a post");
+      }
 
-      const postBody = JSON.stringify({
-        profile_id: profileID,
-        photo_url:
-          "http://res.cloudinary.com/dxlpim9vf/image/upload/v1776677983/kcltk4ieepy9lf3pjyfr.jpg",
-        longitude: loc.coords.longitude,
-        latitude: loc.coords.latitude,
-        post_title: titleText,
-        post_desc: descText,
-        tags: tagText.toLowerCase(),
-      });
+      if (imageFile !== undefined) {
+        const imageUrl = await uploadFile(imageFile);
+        const loc = await getCurrentLocation();
+        const profileID = await AsyncStorage.getItem("profile_id");
+        const postBody = JSON.stringify({
+          profile_id: profileID,
+          photo_url: imageUrl,
+          longitude: loc.coords.longitude,
+          latitude: loc.coords.latitude,
+          post_title: titleText,
+          post_desc: descText,
+          tags: tagText.toLowerCase(),
+        });
 
-      const response = await fetch(
-        `${process.env.EXPO_PUBLIC_CREATE_POST_URL}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
+        const response = await fetch(
+          `${process.env.EXPO_PUBLIC_CREATE_POST_URL}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: postBody,
           },
-          body: postBody,
-        },
-      );
-
-      const data = await response.json();
-    } else {
-      alert("You need to upload an image to create a post");
+        );
+      } else {
+        throw new Error("You must upload a photo to create a post");
+      }
+    } catch (err) {
+      alert(err);
     }
   };
 
+  const testing = () => {
+    console.log("testing testing 123");
+  };
+
   return (
-    <ScrollView contentContainerStyle={styles.contentContainer}>
-      <View style={styles.topContainer}>
+    <ScrollView scrollEnabled={true} contentContainerStyle={styles.scrollView}>
+      <View style={styles.container}>
         <Text role="heading" style={styles.header}>
           Create your own Post
         </Text>
+        <Text style={styles.inputLable}>Give your post a title</Text>
         <TextInput
           style={styles.innerBox}
           maxLength={255}
           onChangeText={(newText) => setTitleText(newText)}
           placeholder={`Title...`}
+          placeholderTextColor={"#6c6c6cff"}
         />
         <ImageViewer
           imgSource={placeholderImg}
           selectedImage={selectImage}
           onPress={pickImageAsync}
         />
+        <Text style={styles.inputLable}>Tag your post</Text>
+        <TextInput
+          style={styles.innerBox}
+          maxLength={255}
+          onChangeText={(newText) => setTagText(newText)}
+          placeholder={`Insert tags, e.g: History,Nature,Food...`}
+          placeholderTextColor={"#6c6c6cff"}
+        />
+        <Text style={styles.inputLable}>Give your post a description</Text>
+        <TextInput
+          multiline
+          numberOfLines={5}
+          maxLength={255}
+          style={styles.innerBox}
+          onChangeText={(newText) => setDescText(newText)}
+          placeholder={`Description...`}
+          placeholderTextColor={"#6c6c6cff"}
+        />
+        <SubmitButton onPress={testing} text="Submit" />
       </View>
-      <TextInput
-        style={styles.innerBox}
-        maxLength={255}
-        onChangeText={(newText) => setTagText(newText)}
-        placeholder={`Insert tags, e.g: History,Nature,Food...`}
-      />
-      <TextInput
-        multiline
-        numberOfLines={5}
-        maxLength={255}
-        style={styles.innerBox}
-        onChangeText={(newText) => setDescText(newText)}
-        placeholder={`Description...`}
-      />
-      <Button testID="submitButton" title={"Submit"} onPress={submit} />
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  contentContainer: {
+  scrollView: {
     flex: 1,
     alignItems: "center",
+  },
+  container: {
+    flex: 1,
+    width: "100%",
+    alignItems: "center",
+    maxWidth: 600,
   },
   header: {
     fontSize: 25,
     fontWeight: 500,
     margin: 10,
+    marginTop: 50,
+    marginBottom: 20,
   },
-  container: {
-    flex: 1,
-    backgroundColor: "#25292e",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  topContainer: {
-    alignItems: "center",
-    width: "100%",
-    backgroundColor: "#547AA5",
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
-    paddingBottom: 40,
-    marginBottom: 15,
+  inputLable: {
+    width: "80%",
+    left: 5,
+    marginTop: 10,
   },
   innerBox: {
-    borderWidth: 2,
-    borderColor: "#000",
+    borderWidth: 1,
+    borderColor: "#c5c5c5ff",
     backgroundColor: "white",
     borderRadius: 15,
     padding: 10,
+    paddingLeft: 20,
     margin: 5,
     width: "80%",
-    minHeight: 50,
+  },
+  submitButton: {
+    borderRadius: 10,
   },
 });
