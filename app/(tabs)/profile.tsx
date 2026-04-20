@@ -1,26 +1,50 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import * as ImagePicker from 'expo-image-picker';
-import { useState } from 'react';
-import {
-  Alert,
-  FlatList,
-  Image,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import { useEffect, useState } from 'react';
+import {Alert, FlatList, Image, Pressable, StyleSheet, Text, TextInput, View,} from 'react-native';
+
+type ProfileData = {
+  title: string;
+  username: string;
+  description: string;
+  avatarUrl: string | null;
+  uploads: string[];
+};
 
 export default function Profile() {
-  const [title] = useState('Legendary');
-  const [username] = useState('@doug');
+  const [title, setTitle] = useState('Legendary');
+  const [username, setUsername] = useState('@doug');
   const [description, setDescription] = useState('');
   const [avatar, setAvatar] = useState<string | null>(null);
-  const [uploads] = useState<string[]>([]);
+  const [uploads, setUploads] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    const loadProfile = async () => {
+      try {
+        const res = await fetch('APIHERE');
+        if (!res.ok) throw new Error('Failed to load profile');
+
+        const data: ProfileData = await res.json();
+        setTitle(data.title);
+        setUsername(data.username);
+        setDescription(data.description);
+        setAvatar(data.avatarUrl);
+        setUploads(data.uploads);
+      } catch (error) {
+        Alert.alert('Error', 'Could not load profile.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProfile();
+  }, []);
 
   const pickImage = async () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
     if (!permissionResult.granted) {
       Alert.alert('Permission required', 'Please allow access to your photos.');
       return;
@@ -37,12 +61,48 @@ export default function Profile() {
     }
   };
 
+  const saveProfile = async () => {
+    try {
+      setSaving(true);
+
+      const res = await fetch('APIHERE', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title,
+          username,
+          description,
+          avatar,
+        }),
+      });
+
+      if (!res.ok) throw new Error('Failed to save profile');
+
+      Alert.alert('Success', 'Profile updated.');
+    } catch (error) {
+      Alert.alert('Error', 'Could not save profile.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.emptyText}>Loading profile...</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.profileBox}>
         <View style={styles.textBlock}>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.username}>{username}</Text>
+
           <TextInput
             value={description}
             onChangeText={setDescription}
@@ -51,6 +111,12 @@ export default function Profile() {
             placeholder="Write a description"
             placeholderTextColor="#8f949b"
           />
+
+          <Pressable onPress={saveProfile} style={styles.saveButton}>
+            <Text style={styles.saveButtonText}>
+              {saving ? 'Saving...' : 'Save Profile'}
+            </Text>
+          </Pressable>
         </View>
 
         <Pressable onPress={pickImage} style={styles.avatarButton}>
@@ -112,16 +178,27 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   descriptionInput: {
-  color: 'black',
-  fontSize: 14,
-  lineHeight: 20,
-  padding: 10,
-  marginTop: 8,
-  minHeight: 60,
-  borderWidth: 1,
-  borderColor: '#3A5A80',
-  borderRadius: 12,
-},
+    color: 'black',
+    fontSize: 14,
+    lineHeight: 20,
+    padding: 10,
+    marginTop: 8,
+    minHeight: 60,
+    borderWidth: 1,
+    borderColor: '#3A5A80',
+    borderRadius: 12,
+  },
+  saveButton: {
+    marginTop: 12,
+    backgroundColor: '#3D5A80',
+    paddingVertical: 12,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  saveButtonText: {
+    color: 'white',
+    fontWeight: '700',
+  },
   avatarButton: {
     alignItems: 'center',
   },
@@ -137,11 +214,6 @@ const styles = StyleSheet.create({
   avatarImage: {
     width: '100%',
     height: '100%',
-  },
-  avatarLabel: {
-    color: '#1B1B1B',
-    fontSize: 12,
-    marginTop: 8,
   },
   grid: {
     paddingTop: 10,

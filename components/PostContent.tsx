@@ -1,52 +1,29 @@
-import { ImageSourcePropType, StyleSheet, Text, View } from "react-native";
+import Post from "@/assets/Post";
+import { StyleSheet, Text, View } from "react-native";
 import PostActions from "./PostActions";
 import PostImage from "./PostImage";
 import PostTags from "./PostTags";
 import ProfileBar from "./ProfileBar";
 
 type Props = {
-  postImgSource: ImageSourcePropType;
-  userImgSource: ImageSourcePropType;
-  description: string;
-  userTitle: string;
-  username: string;
-  postTitle: string;
-  liked: boolean;
-  saved: boolean;
-  tags: Array<String>;
+  post: Post;
   openCommentsAction: () => void;
 };
 
-export default function postContent({
-  postImgSource,
-  userImgSource,
-  description,
-  userTitle,
-  username,
-  postTitle,
-  liked,
-  saved,
-  tags,
-  openCommentsAction,
-}: Props) {
+export default function postContent({ post, openCommentsAction }: Props) {
   const navAction = () => {};
   return (
     <View style={styles.contentContainer}>
-      <Text style={styles.postTitleText}>{postTitle}</Text>
-      <PostImage imgSource={postImgSource} />
+      <Text style={styles.postTitleText}>{post.title}</Text>
+      <PostImage imgSource={post.image} />
       <View style={styles.textContainer}>
-        <ProfileBar
-          imgSource={userImgSource}
-          title={userTitle}
-          username={username}
-        />
-        <Text>{description}</Text>
-        <PostTags tags={tags}></PostTags>
+        <ProfileBar profile={post.user} />
+        <Text>{post.description}</Text>
+        <PostTags tags={post.tags}></PostTags>
         <PostActions
-          navOnClick={navAction}
-          liked={liked}
-          saved={saved}
+          post={post}
           modelOn={openCommentsAction}
+          navOnClick={navAction}
         />
       </View>
     </View>
