@@ -1,6 +1,7 @@
 import getPostsByLocation from "@/assets/logic/getPostsByLocation";
 //import getExampleData from "@/assets/logic/Example";
 import Post from "@/assets/logic/Post";
+import PostComment from "@/assets/logic/PostComment";
 import CommentViewer from "@/components/CommentViewer";
 import PostContent from "@/components/PostContent";
 import { useEffect, useState } from "react";
@@ -17,6 +18,7 @@ export default function Feed() {
   const [search, setSearch] = useState("");
   const [data, setData] = useState<Post[]>([]);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [commentList, setCommentList] = useState<PostComment[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,8 +47,10 @@ export default function Feed() {
     }
   };
 
-  const openComments = () => {
+  const openComments = async (post: Post) => {
     setIsModalVisible(true);
+    const comments = await post.fetchComments();
+    setCommentList(comments);
   };
 
   const onModalClose = () => {
@@ -78,6 +82,7 @@ export default function Feed() {
       <CommentViewer
         isVisible={isModalVisible}
         onClose={onModalClose}
+        commentList={commentList}
       ></CommentViewer>
     </View>
   );

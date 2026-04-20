@@ -7,7 +7,7 @@ import ProfileBar from "./ProfileBar";
 
 type Props = {
   post: Post;
-  openCommentsAction: () => void;
+  openCommentsAction: (post: Post) => void;
 };
 
 export default function postContent({ post, openCommentsAction }: Props) {

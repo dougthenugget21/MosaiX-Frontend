@@ -7,7 +7,7 @@ import SaveButton from "./SaveButton";
 
 type Props = {
   navOnClick: () => void;
-  modelOn: () => void;
+  modelOn: (post: Post) => void;
   post: Post;
 };
 

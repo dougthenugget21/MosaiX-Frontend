@@ -1,3 +1,4 @@
+import getCommentsFromPost from "./getCommentsFromPost";
 import { UserData } from "./User";
 
 export type postObj = {
@@ -64,8 +65,24 @@ export default class Post {
   /**
    * savePost
    */
-  public savePost(loggedInUserId: number) {
-    // http request goes here
+  public toggleSavedPost(loggedInUserId: number) {
+    if (this.saved) {
+      fetch(
+        `https://mosaix-backend.onrender.com/userProfile/unsave?postId=${this.id}&&profileId=${loggedInUserId}`,
+        {
+          method: "DELETE",
+        },
+      );
+      this.saved = false;
+    } else {
+      fetch(
+        `https://mosaix-backend.onrender.com/userProfile/save?postId=${this.id}&&profileId=${loggedInUserId}`,
+        {
+          method: "POST",
+        },
+      );
+      this.saved = true;
+    }
   }
 
   /**
@@ -77,7 +94,7 @@ export default class Post {
   /**
    * fetchComments
    */
-  public fetchComments() {
-    // http request goes here
+  public async fetchComments() {
+    return await getCommentsFromPost(this.id);
   }
 }

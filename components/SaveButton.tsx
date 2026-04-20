@@ -11,6 +11,7 @@ export default function SaveButton({ post }: Props) {
   const [isSaved, setIsSaved] = useState(post.saved);
 
   const toggleSaved = () => {
+    post.toggleSavedPost(1);
     if (isSaved) {
       setIsSaved(false);
     } else {
