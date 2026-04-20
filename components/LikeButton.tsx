@@ -11,6 +11,7 @@ export default function LikeButton({ post }: Props) {
   const [isLiked, setIsLiked] = useState(post.liked);
 
   const toggleLiked = () => {
+    post.toggleLikedPost(1);
     if (isLiked) {
       setIsLiked(false);
     } else {

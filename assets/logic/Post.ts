@@ -41,8 +41,24 @@ export default class Post {
   /**
    * likePost
    */
-  public likePost(loggedInUserId: number) {
-    // fetch request goes here
+  public toggleLikedPost(loggedInUserId: number) {
+    if (this.liked) {
+      fetch(
+        `https://mosaix-backend.onrender.com/posts/unLike?postId=${this.id}&&profileId=${loggedInUserId}`,
+        {
+          method: "PATCH",
+        },
+      );
+      this.liked = false;
+    } else {
+      fetch(
+        `https://mosaix-backend.onrender.com/posts/addLike?postId=${this.id}&&profileId=${loggedInUserId}`,
+        {
+          method: "PATCH",
+        },
+      );
+      this.liked = true;
+    }
   }
 
   /**
