@@ -27,11 +27,11 @@ export default function Feed() {
   }, []);
 
   // handlers for states
-  const handleSearch = (e: TextInputChangeEvent) => {
+  const handleSearch = async (e: TextInputChangeEvent) => {
     const term = e.nativeEvent.text;
     setSearch(term);
     if (term === "") {
-      setData(data);
+      setData(await getPostsByLocation());
     } else {
       const filteredArray = data.filter((item) => {
         const results = item.tags.filter((tag) => tag.includes(term));
