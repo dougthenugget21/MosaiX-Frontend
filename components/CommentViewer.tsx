@@ -29,7 +29,6 @@ export default function CommentViewer({
   const [commentMessage, setCommentMessage] = useState("");
   const uploadComment = () => {
     addComment(1, postId, commentMessage);
-    alert("Comment added");
     setCommentMessage("");
   };
 

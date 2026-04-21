@@ -101,4 +101,9 @@ const styles = StyleSheet.create({
     margin: 8,
     marginTop: 10,
   },
+  postList: {
+    display: "flex",
+    maxWidth: 600,
+    width: "100%",
+  },
 });
