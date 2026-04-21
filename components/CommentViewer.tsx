@@ -12,6 +12,8 @@ import {
   View,
 } from "react-native";
 
+import { useAuth } from "@/app/(context)/Authcontext";
+
 import Comment from "./Comment";
 type Props = {
   isVisible: boolean;
@@ -26,9 +28,10 @@ export default function CommentViewer({
   commentList,
   postId,
 }: Props) {
+  let { profileId } = useAuth();
   const [commentMessage, setCommentMessage] = useState("");
   const uploadComment = () => {
-    addComment(1, postId, commentMessage);
+    addComment(profileId, postId, commentMessage);
     setCommentMessage("");
   };
 
