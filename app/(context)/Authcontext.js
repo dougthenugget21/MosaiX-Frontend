@@ -1,12 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createContext, useContext, useEffect, useState } from "react";
 
-const AuthContext = createContext();
+const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const [profileId, setProfileId] = useState(null);
   const [username, setUsername] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Load session on app start
   useEffect(() => {
@@ -18,6 +19,8 @@ export const AuthProvider = ({ children }) => {
       setToken(storedToken);
       setProfileId(storedProfileId);
       setUsername(storedUsername);
+
+      setIsLoading(false);
     };
 
     loadSession();
@@ -43,6 +46,15 @@ export const AuthProvider = ({ children }) => {
     setUsername(null);
   };
 
+  const initialState = {
+    token: null,
+    profileId: null,
+    username: null,
+    login: () => {},
+    logout: () => {},
+    isLoading: true,
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -51,6 +63,7 @@ export const AuthProvider = ({ children }) => {
         username,
         login,
         logout,
+        isLoading,
       }}
     >
       {children}
@@ -58,4 +71,12 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error("useAuth must be used inside AuthProvider");
+  }
+
+  return context;
+};
