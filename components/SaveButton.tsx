@@ -1,3 +1,4 @@
+import { useAuth } from "@/app/(context)/Authcontext";
 import Post from "@/assets/logic/Post";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useState } from "react";
@@ -9,9 +10,10 @@ type Props = {
 
 export default function SaveButton({ post }: Props) {
   const [isSaved, setIsSaved] = useState(post.saved);
+  const { profileId } = useAuth();
 
   const toggleSaved = () => {
-    post.toggleSavedPost(1);
+    post.toggleSavedPost(profileId);
     if (isSaved) {
       setIsSaved(false);
     } else {

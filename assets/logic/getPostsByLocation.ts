@@ -18,13 +18,12 @@ interface Post_Api {
   is_saved: boolean;
 }
 
-export default async function getPostsByLocation() {
+export default async function getPostsByLocation(userId: number) {
   try {
     const res = await fetch(
-      "https://mosaix-backend.onrender.com/posts/nearby?long=0&&lat0&&dist=100000&&profileId=1",
+      `https://mosaix-backend.onrender.com/posts/nearby?long=0&&lat0&&dist=100000&&profileId=${userId}`,
     );
     let data = await res.json();
-    console.log(data);
     //data = JSON.parse(data) as Post_Api[];
     return parsePostData(data);
   } catch (error) {

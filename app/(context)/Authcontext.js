@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
   // login
   const login = async (data) => {
     await AsyncStorage.setItem("token", data.token);
-    await AsyncStorage.setItem("profile_id", String(data.profile_id));
+    await AsyncStorage.setItem("profile_id", data.profile_id);
     await AsyncStorage.setItem("user_name", data.user_name);
 
     setToken(data.token);

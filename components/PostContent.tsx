@@ -34,7 +34,6 @@ const styles = StyleSheet.create({
   contentContainer: {
     display: "flex",
     margin: 6,
-    maxWidth: 600,
   },
   textContainer: {
     display: "flex",

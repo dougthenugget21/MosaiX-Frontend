@@ -1,17 +1,19 @@
-export default function addComment(
+export default async function addComment(
   userId: number,
   postId: number,
   commentContent: string,
 ) {
-  fetch(`https://mosaix-backend.onrender.com/comment/add/`, {
+  const body = JSON.stringify({
+    post_id: postId,
+    by_profile_id: Number(userId),
+    comment: commentContent.toString(),
+  });
+  console.log(body);
+  await fetch(`https://mosaix-backend.onrender.com/comment/add/`, {
     method: "POST",
     headers: {
-      contentType: "application/json",
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      post_id: postId,
-      by_profile_id: userId,
-      comment: commentContent,
-    }),
+    body: body,
   });
 }

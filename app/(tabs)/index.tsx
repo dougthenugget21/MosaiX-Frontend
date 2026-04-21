@@ -12,6 +12,7 @@ import {
   TextInputChangeEvent,
   View,
 } from "react-native";
+import { useAuth } from "../(context)/Authcontext";
 
 export default function Index() {
   // Creating states to be tracked
@@ -20,21 +21,21 @@ export default function Index() {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [commentList, setCommentList] = useState<PostComment[]>([]);
   const [openPostId, setOpenPostId] = useState<number>(-1);
-
+  const { profileId } = useAuth();
   useEffect(() => {
     const fetchData = async () => {
-      const temp = await getPostsByLocation();
+      const temp = await getPostsByLocation(profileId);
       setData(temp);
     };
     fetchData();
-  }, []);
+  }, [profileId]);
 
   // handlers for states
   const handleSearch = async (e: TextInputChangeEvent) => {
     const term = e.nativeEvent.text;
     setSearch(term);
     if (term === "") {
-      setData(await getPostsByLocation());
+      setData(await getPostsByLocation(profileId));
     } else {
       const filteredArray = data.filter((item) => {
         const results = item.tags.filter((tag) => tag.includes(term));
@@ -76,6 +77,7 @@ export default function Index() {
         onChange={handleSearch}
       />
       <FlatList
+        style={styles.postList}
         data={data}
         renderItem={({ item }) => (
           <PostContent post={item} openCommentsAction={openComments} />
