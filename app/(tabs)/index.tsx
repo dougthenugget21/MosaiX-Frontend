@@ -19,6 +19,7 @@ export default function Index() {
   const [data, setData] = useState<Post[]>([]);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [commentList, setCommentList] = useState<PostComment[]>([]);
+  const [openPostId, setOpenPostId] = useState<number>(-1);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,6 +50,7 @@ export default function Index() {
 
   const openComments = async (post: Post) => {
     setIsModalVisible(true);
+    setOpenPostId(post.id);
     const comments = await post.fetchComments();
     setCommentList(comments);
   };
@@ -83,6 +85,7 @@ export default function Index() {
         isVisible={isModalVisible}
         onClose={onModalClose}
         commentList={commentList}
+        postId={openPostId}
       ></CommentViewer>
     </View>
   );
@@ -97,5 +100,10 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     margin: 8,
     marginTop: 10,
+  },
+  postList: {
+    display: "flex",
+    maxWidth: 600,
+    width: "100%",
   },
 });

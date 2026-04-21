@@ -1,11 +1,14 @@
+import addComment from "@/assets/logic/addComment";
 import PostComment from "@/assets/logic/PostComment";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { useState } from "react";
 import {
   FlatList,
   Modal,
   Pressable,
   StyleSheet,
   Text,
+  TextInput,
   View,
 } from "react-native";
 
@@ -13,6 +16,7 @@ import Comment from "./Comment";
 type Props = {
   isVisible: boolean;
   onClose: () => void;
+  postId: number;
   commentList: PostComment[];
 };
 
@@ -20,7 +24,14 @@ export default function CommentViewer({
   isVisible,
   onClose,
   commentList,
+  postId,
 }: Props) {
+  const [commentMessage, setCommentMessage] = useState("");
+  const uploadComment = () => {
+    addComment(1, postId, commentMessage);
+    setCommentMessage("");
+  };
+
   return (
     <View>
       <Modal animationType="slide" transparent={true} visible={isVisible}>
@@ -35,6 +46,19 @@ export default function CommentViewer({
             data={commentList}
             renderItem={({ item }) => <Comment comment={item} />}
           />
+          <View style={styles.commentContainer}>
+            <TextInput
+              multiline
+              numberOfLines={4}
+              maxLength={240}
+              onChangeText={setCommentMessage}
+              value={commentMessage}
+              placeholder="How Was This Place?"
+            />
+            <Pressable onPress={uploadComment}>
+              <Text>Add Comment</Text>
+            </Pressable>
+          </View>
         </View>
       </Modal>
     </View>
@@ -64,5 +88,10 @@ const styles = StyleSheet.create({
   title: {
     color: "#1f1d1d",
     fontSize: 16,
+  },
+  commentContainer: {
+    display: "flex",
+    justifyContent: "center",
+    padding: 4,
   },
 });
