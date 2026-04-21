@@ -1,4 +1,5 @@
 import ImageViewer from "@/components/ImageUpload";
+import LocationButton from "@/components/LocationButton";
 import SubmitButton from "@/components/SubmitButton";
 import * as ImagePicker from "expo-image-picker";
 import * as Location from "expo-location";
@@ -60,6 +61,7 @@ export default function Create() {
       },
     );
 
+    console.log(response);
     const image = await response.json();
 
     return image.url;
@@ -101,12 +103,23 @@ export default function Create() {
             body: postBody,
           },
         );
+        console.log(response);
+        resetPage();
       } else {
         throw new Error("You must upload a photo to create a post");
       }
     } catch (err) {
       alert(err);
     }
+  };
+
+  const resetPage = () => {
+    setTitleText("");
+    setDescText("");
+    setTagText("");
+    setSelectedImage(undefined);
+    setImageFile(undefined);
+    alert("Post successfully created!");
   };
 
   const testing = () => {
@@ -121,19 +134,24 @@ export default function Create() {
         </Text>
         <Text style={styles.inputLable}>Give your post a title</Text>
         <TextInput
+          value={titleText}
           style={styles.innerBox}
           maxLength={255}
           onChangeText={(newText) => setTitleText(newText)}
           placeholder={`Title...`}
           placeholderTextColor={"#6c6c6cff"}
         />
+        <Text style={styles.inputLable}>Select an image</Text>
         <ImageViewer
           imgSource={placeholderImg}
           selectedImage={selectImage}
           onPress={pickImageAsync}
         />
+        <Text style={styles.inputLable}>Choose your Location</Text>
+        <LocationButton onPressCurrent={testing} onPressSelect={testing} />
         <Text style={styles.inputLable}>Tag your post</Text>
         <TextInput
+          value={tagText}
           style={styles.innerBox}
           maxLength={255}
           onChangeText={(newText) => setTagText(newText)}
@@ -142,10 +160,11 @@ export default function Create() {
         />
         <Text style={styles.inputLable}>Give your post a description</Text>
         <TextInput
+          value={descText}
           multiline
           numberOfLines={5}
           maxLength={255}
-          style={styles.innerBox}
+          style={[styles.descBox, styles.innerBox]}
           onChangeText={(newText) => setDescText(newText)}
           placeholder={`Description...`}
           placeholderTextColor={"#6c6c6cff"}
@@ -189,7 +208,7 @@ const styles = StyleSheet.create({
     margin: 5,
     width: "80%",
   },
-  submitButton: {
-    borderRadius: 10,
+  descBox: {
+    minHeight: 100,
   },
 });
