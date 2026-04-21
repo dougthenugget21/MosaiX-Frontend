@@ -23,7 +23,7 @@ export default function SignUp() {
   const handleSignUp = async () => {
     try {
       if (!email || !user_name || !password) {
-        alert("Please fill all fields");
+        alert("Please fill all details to create login account!");
         return;
       }
 
@@ -55,7 +55,7 @@ export default function SignUp() {
 
 
       // Redirect to feed page
-      router.replace("/(tabs)/feed");
+      router.replace("/(tabs)");
     } catch (error) {
       console.error(error);
       alert(error.message);

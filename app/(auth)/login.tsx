@@ -9,13 +9,61 @@ import {
   TextInput,
   View,
 } from "react-native";
+import { useAuth } from "../(context)/Authcontext";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const API_URL = "https://mosaix-backend.onrender.com/userProfile/login";
+  // const API_URL = "http://localhost:3000/userProfile/login";
+  const { login } = useAuth();
 
-  const handleLogin = () => {
-    router.replace("/(tabs)");
+  const handleLogin = async () => {
+    try {
+      if (!email || !password) {
+        alert("Please fill in all fields to login!");
+        return;
+      }
+
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+      //alert(response.status);
+
+      if (!response.ok) {
+        if (response.status === 404) {
+          alert("No account with this email. Please sign up.");
+        } else if (response.status === 401) {
+          alert("Incorrect password. Please try again.");
+        } else {
+          alert("Login failed. Please try again.");
+        }
+        return;
+      }
+
+      const data = await response.json();
+
+      // Store session
+      await login({
+        token: data.token,
+        profile_id: data.profile_id,
+        user_name: data.user_name,
+      });
+
+      // Redirect to feed page
+      router.replace("/(tabs)");
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("Something went wrong. Please try again.");
+    }
   };
 
   return (
