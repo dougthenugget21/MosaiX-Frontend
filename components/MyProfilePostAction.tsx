@@ -1,7 +1,6 @@
 import Post from "@/assets/logic/Post";
 import { StyleSheet, View } from "react-native";
 import CommentButton from "./CommentButton";
-import LikeButton from "./LikeButton";
 import NavButton from "./NavButton";
 import SaveButton from "./SaveButton";
 
@@ -10,12 +9,11 @@ type Props = {
   post: Post;
 };
 
-export default function PostActions({ modelOn, post }: Props) {
+export default function MyProfilePostActions({ modelOn, post }: Props) {
   return (
     <View style={styles.actionContainer}>
       <CommentButton post={post} setModal={modelOn} />
       <SaveButton post={post} />
-      <LikeButton post={post} />
       <NavButton post={post} />
     </View>
   );

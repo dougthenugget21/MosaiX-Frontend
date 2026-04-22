@@ -11,7 +11,6 @@ type Props = {
 };
 
 export default function postContent({ post, openCommentsAction }: Props) {
-  const navAction = () => {};
   return (
     <View style={styles.contentContainer}>
       <View style={styles.titlePicContainer}>

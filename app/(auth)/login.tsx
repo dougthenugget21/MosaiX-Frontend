@@ -113,69 +113,90 @@ export default function Login() {
   );
 }
 
+const theme = {
+  bg: "#E6F2EA",
+  card: "#FFFFFF",
+  cardSoft: "#D8E9DD",
+  primary: "#166534",
+  accent: "#F97316",
+  text: "#0F1F14",
+  muted: "#4B5B52",
+  border: "rgba(22, 101, 52, 0.15)",
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#547AA5",
+    backgroundColor: theme.bg,
   },
+
   content: {
     flex: 1,
     justifyContent: "center",
     padding: 20,
   },
+
   title: {
-    fontSize: 34,
+    fontSize: 32,
     fontWeight: "800",
-    color: "#FFFFFF",
+    color: theme.text,
     marginBottom: 6,
   },
+
   subtitle: {
-    fontSize: 15,
-    color: "#EAE7F2",
+    fontSize: 14,
+    color: theme.muted,
     marginBottom: 24,
   },
+
   card: {
-    backgroundColor: "#EAE7F2",
+    backgroundColor: theme.card,
     borderRadius: 20,
-    padding: 18,
+    padding: 20,
     borderWidth: 1,
-    borderColor: "#DCE3EC",
+    borderColor: theme.border,
   },
+
   label: {
     fontSize: 14,
     fontWeight: "600",
-    color: "#3D5A80",
-    marginBottom: 8,
+    color: theme.muted,
+    marginBottom: 6,
     marginTop: 12,
   },
+
   input: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: theme.cardSoft,
     borderRadius: 12,
     paddingHorizontal: 14,
     paddingVertical: 12,
     fontSize: 15,
-    color: "#1B1B1B",
+    color: theme.text,
     borderWidth: 1,
-    borderColor: "#DCE3EC",
+    borderColor: theme.border,
   },
+
   button: {
-    marginTop: 18,
-    backgroundColor: "#3D5A80",
+    marginTop: 20,
+    backgroundColor: theme.primary,
     paddingVertical: 14,
     borderRadius: 14,
     alignItems: "center",
   },
+
   buttonText: {
     color: "#FFFFFF",
     fontSize: 16,
     fontWeight: "700",
   },
+
   linkButton: {
-    marginTop: 14,
+    marginTop: 16,
     alignItems: "center",
   },
+
   linkText: {
-    color: "#3D5A80",
+    color: theme.primary,
     fontSize: 14,
     fontWeight: "600",
   },

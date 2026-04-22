@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
       const storedUsername = await AsyncStorage.getItem("user_name");
 
       setToken(storedToken);
-      setProfileId(storedProfileId);
+      setProfileId(Number(storedProfileId));
       setUsername(storedUsername);
 
       setIsLoading(false);
@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
   // login
   const login = async (data) => {
     await AsyncStorage.setItem("token", data.token);
-    await AsyncStorage.setItem("profile_id", data.profile_id);
+    await AsyncStorage.setItem("profile_id", String(data.profile_id));
     await AsyncStorage.setItem("user_name", data.user_name);
 
     setToken(data.token);
@@ -44,6 +44,7 @@ export const AuthProvider = ({ children }) => {
     setToken(null);
     setProfileId(null);
     setUsername(null);
+    router.replace("/login");
   };
 
   const initialState = {
