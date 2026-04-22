@@ -1,5 +1,6 @@
 import addComment from "@/assets/logic/addComment";
 import PostComment from "@/assets/logic/PostComment";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useState } from "react";
 import {
@@ -51,15 +52,17 @@ export default function CommentViewer({
           />
           <View style={styles.commentContainer}>
             <TextInput
+              style={styles.commentInput}
               multiline
-              numberOfLines={4}
+              numberOfLines={2}
               maxLength={240}
               onChangeText={setCommentMessage}
               value={commentMessage}
               placeholder="How Was This Place?"
+              placeholderTextColor={"#6c6c6cff"}
             />
-            <Pressable onPress={uploadComment}>
-              <Text>Add Comment</Text>
+            <Pressable onPress={uploadComment} style={styles.commentButton}>
+              <FontAwesome name="send" size={24} color={theme.primary} />
             </Pressable>
           </View>
         </View>
@@ -68,19 +71,33 @@ export default function CommentViewer({
   );
 }
 
+const theme = {
+  bg: "#E6F2EA",
+  card: "#FFFFFF",
+  cardSoft: "#D8E9DD",
+  primary: "#166534",
+  accent: "#F97316",
+  text: "#0F1F14",
+  muted: "#4B5B52",
+  cardBorder: "#7aa98eff",
+  border: "rgba(22, 101, 52, 0.15)",
+};
+
 const styles = StyleSheet.create({
   modalContent: {
     height: "50%",
     width: "100%",
-    backgroundColor: "#ebedef",
+    backgroundColor: theme.bg,
     borderTopRightRadius: 18,
     borderTopLeftRadius: 18,
     position: "absolute",
     bottom: 0,
   },
   titleContainer: {
-    height: "16%",
-    backgroundColor: "#d7d7d7",
+    height: 40,
+    borderBottomWidth: 1,
+    borderColor: theme.muted,
+    backgroundColor: theme.bg,
     borderTopRightRadius: 10,
     borderTopLeftRadius: 10,
     paddingHorizontal: 20,
@@ -89,12 +106,33 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   title: {
-    color: "#1f1d1d",
+    color: theme.text,
     fontSize: 16,
   },
   commentContainer: {
     display: "flex",
-    justifyContent: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     padding: 4,
+    borderTopWidth: 1,
+    borderColor: theme.muted,
+  },
+  commentInput: {
+    flex: 1,
+    backgroundColor: theme.card,
+    borderRadius: 14,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: theme.muted,
+  },
+  commentButton: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: theme.cardSoft,
+    height: "100%",
+    aspectRatio: 1 / 1,
+    borderRadius: 14,
+    marginLeft: 4,
   },
 });
