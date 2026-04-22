@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
   },
   tagText: {
-    color: "blue",
+    color: "#166534",
     padding: 2,
   },
 });
