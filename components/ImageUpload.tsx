@@ -29,11 +29,9 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   imageContainer: {
-    width: "80%",
+    width: "96%",
     backgroundColor: "white",
-    borderColor: "#ffffffff",
-    borderWidth: 2,
     borderRadius: 20,
-    padding: 5,
+    margin: 5,
   },
 });
