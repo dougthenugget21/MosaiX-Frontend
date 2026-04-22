@@ -14,12 +14,16 @@ export default function postContent({ post, openCommentsAction }: Props) {
   const navAction = () => {};
   return (
     <View style={styles.contentContainer}>
-      <Text style={styles.postTitleText}>{post.title}</Text>
-      <PostImage imgSource={post.image} />
+      <View style={styles.titlePicContainer}>
+        <Text style={styles.postTitleText}>{post.title}</Text>
+        <PostImage imgSource={post.image} />
+      </View>
       <View style={styles.textContainer}>
-        <ProfileBar profile={post.user} />
-        <Text>{post.description}</Text>
-        <PostTags tags={post.tags}></PostTags>
+        <View style={styles.textSubContainer}>
+          <ProfileBar profile={post.user} />
+          <Text>{post.description}</Text>
+          <PostTags tags={post.tags}></PostTags>
+        </View>
         <PostActions
           post={post}
           modelOn={openCommentsAction}
@@ -30,17 +34,49 @@ export default function postContent({ post, openCommentsAction }: Props) {
   );
 }
 
+const theme = {
+  bg: "#E6F2EA",
+  card: "#FFFFFF",
+  cardSoft: "#D8E9DD",
+  primary: "#166534",
+  accent: "#F97316",
+  text: "#0F1F14",
+  muted: "#4B5B52",
+  cardBorder: "#7aa98eff",
+  border: "rgba(22, 101, 52, 0.15)",
+};
+
 const styles = StyleSheet.create({
   contentContainer: {
     display: "flex",
     margin: 6,
+    borderWidth: 0,
+    borderColor: theme.card,
+    backgroundColor: theme.card,
+    borderRadius: 20,
+    paddingBottom: 5,
+  },
+  titlePicContainer: {
+    backgroundColor: theme.card,
+    borderRadius: 14,
+    paddingTop: 3,
   },
   textContainer: {
     display: "flex",
     flexDirection: "column",
+    paddingHorizontal: 5,
+  },
+  textSubContainer: {
+    backgroundColor: theme.cardSoft,
+    borderRadius: 14,
+    marginVertical: 5,
+    paddingHorizontal: 5,
   },
   descriptionText: {},
   postTitleText: {
     fontSize: 20,
+    fontWeight: 400,
+    color: theme.text,
+    paddingLeft: 5,
   },
 });

@@ -66,7 +66,7 @@ export default function Index() {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        margin: 4,
+        backgroundColor: theme.bg,
       }}
     >
       {/* Filter Bar*/}
@@ -93,12 +93,23 @@ export default function Index() {
   );
 }
 
+const theme = {
+  bg: "#E6F2EA",
+  card: "#FFFFFF",
+  cardSoft: "#D8E9DD",
+  primary: "#166534",
+  accent: "#F97316",
+  text: "#0F1F14",
+  muted: "#4B5B52",
+  border: "rgba(22, 101, 52, 0.15)",
+};
+
 const styles = StyleSheet.create({
   filterBar: {
     width: "100%",
     maxWidth: 600,
     padding: 5,
-    backgroundColor: "white",
+    backgroundColor: theme.card,
     borderRadius: 6,
     margin: 8,
     marginTop: 10,

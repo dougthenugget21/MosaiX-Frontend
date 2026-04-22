@@ -16,6 +16,17 @@ export default function ProfileBar({ profile }: Props) {
   );
 }
 
+const theme = {
+  bg: "#E6F2EA",
+  card: "#FFFFFF",
+  cardSoft: "#D8E9DD",
+  primary: "#166534",
+  accent: "#F97316",
+  text: "#0F1F14",
+  muted: "#4B5B52",
+  border: "rgba(22, 101, 52, 0.15)",
+};
+
 const styles = StyleSheet.create({
   profileTitle: {
     fontSize: 12,
@@ -25,7 +36,6 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "flex-start",
-    backgroundColor: "#f5f0f0",
     padding: 8,
     borderRadius: 4,
     alignItems: "center",
