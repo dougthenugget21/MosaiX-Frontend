@@ -11,7 +11,6 @@ type Props = {
 };
 
 export default function postContent({ post, openCommentsAction }: Props) {
-  const navAction = () => {};
   return (
     <View style={styles.contentContainer}>
       <Text style={styles.postTitleText}>{post.title}</Text>
@@ -20,11 +19,7 @@ export default function postContent({ post, openCommentsAction }: Props) {
         <ProfileBar profile={post.user} />
         <Text>{post.description}</Text>
         <PostTags tags={post.tags}></PostTags>
-        <PostActions
-          post={post}
-          modelOn={openCommentsAction}
-          navOnClick={navAction}
-        />
+        <PostActions post={post} modelOn={openCommentsAction} />
       </View>
     </View>
   );

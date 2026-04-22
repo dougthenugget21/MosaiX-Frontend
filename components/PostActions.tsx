@@ -1,23 +1,22 @@
 import Post from "@/assets/logic/Post";
 import { StyleSheet, View } from "react-native";
 import CommentButton from "./CommentButton";
-import IconButton from "./IconButton";
 import LikeButton from "./LikeButton";
+import NavButton from "./NavButton";
 import SaveButton from "./SaveButton";
 
 type Props = {
-  navOnClick: () => void;
   modelOn: (post: Post) => void;
   post: Post;
 };
 
-export default function PostActions({ navOnClick, modelOn, post }: Props) {
+export default function PostActions({ modelOn, post }: Props) {
   return (
     <View style={styles.actionContainer}>
       <CommentButton post={post} setModal={modelOn} />
       <SaveButton post={post} />
       <LikeButton post={post} />
-      <IconButton icon="location-arrow" onPress={() => {}} />
+      <NavButton post={post} />
     </View>
   );
 }
