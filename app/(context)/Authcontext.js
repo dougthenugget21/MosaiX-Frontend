@@ -44,6 +44,7 @@ export const AuthProvider = ({ children }) => {
     setToken(null);
     setProfileId(null);
     setUsername(null);
+    router.replace("/login");
   };
 
   const initialState = {

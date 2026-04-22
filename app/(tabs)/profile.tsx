@@ -1,11 +1,12 @@
-import Post from "@/assets/logic/Post";
+import Post, { postObj } from "@/assets/logic/Post";
 import PostComment from "@/assets/logic/PostComment";
 import { UserData } from "@/assets/logic/User";
 import CommentViewer from "@/components/CommentViewer";
-import PostContent from "@/components/PostContent";
+import MyProfilePostContent from "@/components/MyProfilePostContent";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import * as ImagePicker from "expo-image-picker";
-import { useEffect, useState } from "react";
+import { useFocusEffect } from "expo-router";
+import { useCallback, useState } from "react";
 import { useAuth } from "../(context)/Authcontext";
 
 import {
@@ -44,75 +45,76 @@ export default function Profile() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  const [openPostId, setOpenPostId] = useState<number>(-1);
 
   const [activeTab, setActiveTab] = useState<"posts" | "saved">("posts");
 
-  // Load
-  useEffect(() => {
-    const loadProfile = async () => {
-      try {
-        if (!profileId || !token) return;
+  useFocusEffect(
+    useCallback(() => {
+      setLoading(true);
+      loadProfileData();
+    }, [profileId, token]),
+  );
 
-        const res = await fetch(
-          `https://mosaix-backend.onrender.com/userProfile/profileid/${profileId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
+  const loadProfileData = async () => {
+    try {
+      if (!profileId || !token) return;
+
+      const res = await fetch(
+        `https://mosaix-backend.onrender.com/userProfile/profileid/${profileId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+
+      if (!res.ok)
+        throw new Error(
+          "Failed to load profile details. Please try again later!",
         );
 
-        if (!res.ok)
-          throw new Error(
-            "Failed to load profile details. Please try again later!",
-          );
+      const data: ProfileData = await res.json();
 
-        const data: ProfileData = await res.json();
+      setProfile(data);
+      setEditedUsername(data.user_name || "");
+      setDescription(data.bio || "");
+      setIsPrivate(data.is_private || false);
+      setAvatar(data.profilephoto_url || null);
 
-        setProfile(data);
-        //alert(data.user_name);
-        setEditedUsername(data.user_name || "");
-        setDescription(data.bio || "");
-        setIsPrivate(data.is_private || false);
-        setAvatar(data.profilephoto_url || null);
+      //  MY POSTS
+      const resMyPosts = await fetch(
+        `https://mosaix-backend.onrender.com/posts/profile/${profileId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
 
-        const resMyPosts = await fetch(
-          `https://mosaix-backend.onrender.com/posts/profile/${profileId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        );
-
-        if (!resMyPosts.ok) {
-          throw new Error("Failed to load posts. Please try again later!");
-        }
-
-        const datamypost = await resMyPosts.json();
-        setMyPosts(parsePostData(datamypost));
-
-        const resSavedPosts = await fetch(
-          `https://mosaix-backend.onrender.com/posts/saved/${profileId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        );
-
-        if (!resMyPosts.ok) {
-          throw new Error("Failed to load posts. Please try again later!");
-        }
-
-        const datasavedpost = await resSavedPosts.json();
-        setSavedPosts(parsePostData(datasavedpost));
-
-        //alert(datamypost[0]);
-        //console.log("Rumana" + datamypost[0].profilephoto_url);
-      } catch {
-        Alert.alert("Error", "Could not load profile");
-      } finally {
-        setLoading(false);
+      if (!resMyPosts.ok) {
+        throw new Error("Failed to load posts. Please try again later!");
       }
-    };
 
-    loadProfile();
-  }, [profileId, token]);
+      const datamypost = await resMyPosts.json();
+      setMyPosts(parsePostData(datamypost));
+
+      //  SAVED POSTS
+      const resSavedPosts = await fetch(
+        `https://mosaix-backend.onrender.com/posts/saved/${profileId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+
+      if (!resSavedPosts.ok) {
+        throw new Error("Failed to load posts. Please try again later!");
+      }
+
+      const datasavedpost = await resSavedPosts.json();
+      setSavedPosts(parsePostData(datasavedpost));
+    } catch {
+      Alert.alert("Error", "Could not load profile");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   function parsePostData(data: Post[]) {
     const formattedData = data.map((ele) => {
@@ -236,6 +238,7 @@ export default function Profile() {
   //Comments
   const openComments = async (post: Post) => {
     setIsModalVisible(true);
+    setOpenPostId(post.id);
     const comments = await post.fetchComments();
     setCommentList(comments);
   };
@@ -366,7 +369,10 @@ export default function Profile() {
               data={myposts}
               keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => (
-                <PostContent post={item} openCommentsAction={openComments} />
+                <MyProfilePostContent
+                  post={item}
+                  openCommentsAction={openComments}
+                />
               )}
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{ paddingBottom: 100 }}
@@ -376,6 +382,7 @@ export default function Profile() {
               isVisible={isModalVisible}
               onClose={onModalClose}
               commentList={commentList}
+              postId={openPostId}
             />
           </>
         ) : (
@@ -384,7 +391,10 @@ export default function Profile() {
               data={savedposts}
               keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => (
-                <PostContent post={item} openCommentsAction={openComments} />
+                <MyProfilePostContent
+                  post={item}
+                  openCommentsAction={openComments}
+                />
               )}
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{ paddingBottom: 100 }}
