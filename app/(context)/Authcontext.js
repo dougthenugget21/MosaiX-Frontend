@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from "expo-router";
 import { createContext, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext(null);
@@ -17,7 +18,7 @@ export const AuthProvider = ({ children }) => {
       const storedUsername = await AsyncStorage.getItem("user_name");
 
       setToken(storedToken);
-      setProfileId(Number(storedProfileId));
+      setProfileId(storedProfileId);
       setUsername(storedUsername);
 
       setIsLoading(false);
@@ -45,15 +46,6 @@ export const AuthProvider = ({ children }) => {
     setProfileId(null);
     setUsername(null);
     router.replace("/login");
-  };
-
-  const initialState = {
-    token: null,
-    profileId: null,
-    username: null,
-    login: () => {},
-    logout: () => {},
-    isLoading: true,
   };
 
   return (
