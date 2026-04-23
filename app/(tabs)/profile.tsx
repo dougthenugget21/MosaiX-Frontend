@@ -91,6 +91,19 @@ export default function Profile() {
     }
   };
 
+  // Cancel changes
+  const handleCancel = () => {
+    if (!profile) return;
+
+    setEditedUsername(profile.user_name || "");
+    setDescription(profile.bio || "");
+    setIsPrivate(profile.is_private || false);
+    setAvatar(profile.profilephoto_url || null);
+
+    setSavedImageUrl(profile.profilephoto_url || null);
+
+    setEditMode(false);
+  };
   const LoadMyPosts = async () => {
     try {
       const resMyPosts = await fetch(
@@ -323,11 +336,17 @@ export default function Profile() {
         </View>
       </View>
       {editMode && (
-        <Pressable onPress={saveProfile} style={styles.saveButton}>
-          <Text style={styles.saveButtonText}>
-            {saving ? "Saving..." : "Save"}
-          </Text>
-        </Pressable>
+        <View style={styles.actionRow}>
+          <Pressable onPress={handleCancel} style={styles.cancelButton}>
+            <Text style={styles.cancelButtonText}>Cancel</Text>
+          </Pressable>
+
+          <Pressable onPress={saveProfile} style={styles.saveButton}>
+            <Text style={styles.saveButtonText}>
+              {saving ? "Saving..." : "Save"}
+            </Text>
+          </Pressable>
+        </View>
       )}
       <View style={styles.section}>
         <View style={styles.rowBetween}>
@@ -557,11 +576,11 @@ const styles = StyleSheet.create({
   },
 
   saveButton: {
+    flex: 1,
     backgroundColor: theme.primary,
     padding: 14,
     borderRadius: 10,
     alignItems: "center",
-    marginTop: 10,
   },
 
   saveButtonText: {
@@ -685,5 +704,26 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
+  },
+  actionRow: {
+    flexDirection: "row",
+    gap: 10,
+    marginTop: 10,
+  },
+
+  cancelButton: {
+    flex: 1,
+    backgroundColor: theme.primary,
+    padding: 14,
+    borderRadius: 10,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: theme.border,
+  },
+
+  cancelButtonText: {
+    color: "white",
+    fontWeight: "600",
+    fontSize: 14,
   },
 });
