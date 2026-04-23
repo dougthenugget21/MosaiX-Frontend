@@ -19,6 +19,7 @@ import {
   TextInput,
   View,
 } from "react-native";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 type ProfileData = {
   user_name: string;
@@ -294,194 +295,202 @@ export default function Profile() {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.logoutSection}>
-        <Pressable
-          onPress={async () => {
-            await logout();
-            router.replace("/(auth)/login");
-          }}
-          style={styles.logoutButton}
-        >
-          <Ionicons name="log-out-outline" size={20} color={theme.muted} />
-          <Text style={styles.logoutText}>Logout</Text>
-        </Pressable>
-      </View>
-      <Pressable onPress={pickImage} style={styles.avatarWrapper}>
-        <View style={styles.avatar}>
-          {avatar ? (
-            <Image source={{ uri: avatar }} style={styles.avatarImage} />
-          ) : (
-            <Ionicons name="person" size={50} color={theme.muted} />
-          )}
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.logoutSection}>
+          <Pressable
+            onPress={async () => {
+              await logout();
+              router.replace("/(auth)/login");
+            }}
+            style={styles.logoutButton}
+          >
+            <Ionicons name="log-out-outline" size={20} color={theme.muted} />
+            <Text style={styles.logoutText}>Logout</Text>
+          </Pressable>
         </View>
-      </Pressable>
+        <Pressable onPress={pickImage} style={styles.avatarWrapper}>
+          <View style={styles.avatar}>
+            {avatar ? (
+              <Image source={{ uri: avatar }} style={styles.avatarImage} />
+            ) : (
+              <Ionicons name="person" size={50} color={theme.muted} />
+            )}
+          </View>
+        </Pressable>
 
-      <View style={styles.badgeToggleRow}>
-        {profile?.reputation_badge && (
-          <View style={styles.badgeContainer}>
-            <Ionicons name="trophy" size={16} color={theme.accent} />
-            <Text style={styles.badgeText}>{profile.reputation_badge}</Text>
+        <View style={styles.badgeToggleRow}>
+          {profile?.reputation_badge && (
+            <View style={styles.badgeContainer}>
+              <Ionicons name="trophy" size={16} color={theme.accent} />
+              <Text style={styles.badgeText}>{profile.reputation_badge}</Text>
+            </View>
+          )}
+          <View style={styles.privateGroup}>
+            <Text style={styles.label}>Private Profile</Text>
+            <Pressable
+              onPress={() => {
+                setIsPrivate(!isPrivate);
+                setEditMode(true);
+              }}
+              style={[styles.toggle, isPrivate && styles.toggleActive]}
+            />
+          </View>
+        </View>
+        {editMode && (
+          <View style={styles.actionRow}>
+            <Pressable onPress={handleCancel} style={styles.cancelButton}>
+              <Text style={styles.cancelButtonText}>Cancel</Text>
+            </Pressable>
+
+            <Pressable onPress={saveProfile} style={styles.saveButton}>
+              <Text style={styles.saveButtonText}>
+                {saving ? "Saving..." : "Save"}
+              </Text>
+            </Pressable>
           </View>
         )}
-        <View style={styles.privateGroup}>
-          <Text style={styles.label}>Private Profile</Text>
-          <Pressable
-            onPress={() => {
-              setIsPrivate(!isPrivate);
-              setEditMode(true);
-            }}
-            style={[styles.toggle, isPrivate && styles.toggleActive]}
-          />
+        <View style={styles.section}>
+          <View style={styles.rowBetween}>
+            <Text style={styles.label}>Username</Text>
+            <Pressable onPress={() => setEditMode(true)}>
+              <Ionicons name="pencil" size={18} color={theme.muted} />
+            </Pressable>
+          </View>
+
+          {editMode ? (
+            <TextInput
+              value={editedUsername}
+              onChangeText={setEditedUsername}
+              style={styles.input}
+            />
+          ) : (
+            <Text style={styles.value}>{editedUsername}</Text>
+          )}
         </View>
-      </View>
-      {editMode && (
-        <View style={styles.actionRow}>
-          <Pressable onPress={handleCancel} style={styles.cancelButton}>
-            <Text style={styles.cancelButtonText}>Cancel</Text>
+
+        <View style={styles.section}>
+          <View style={styles.rowBetween}>
+            <Text style={styles.label}>Bio</Text>
+            <Pressable onPress={() => setEditMode(true)}>
+              <Ionicons name="pencil" size={18} color={theme.muted} />
+            </Pressable>
+          </View>
+
+          {editMode ? (
+            <TextInput
+              value={description}
+              onChangeText={setDescription}
+              multiline
+              style={[styles.input, { height: 80 }]}
+            />
+          ) : (
+            <Text style={styles.value}>{description || "No bio added"}</Text>
+          )}
+        </View>
+        {/* TAB BUTTONS */}
+        <View style={styles.tabBar}>
+          <Pressable
+            onPress={() => setActiveTab("posts")}
+            style={styles.tabItem}
+          >
+            <Text
+              style={[
+                styles.tabText,
+                activeTab === "posts" && styles.tabActiveText,
+              ]}
+            >
+              My Posts
+            </Text>
           </Pressable>
 
-          <Pressable onPress={saveProfile} style={styles.saveButton}>
-            <Text style={styles.saveButtonText}>
-              {saving ? "Saving..." : "Save"}
+          <Pressable
+            onPress={() => setActiveTab("saved")}
+            style={styles.tabItem}
+          >
+            <Text
+              style={[
+                styles.tabText,
+                activeTab === "saved" && styles.tabActiveText,
+              ]}
+            >
+              Saved Posts
             </Text>
           </Pressable>
         </View>
-      )}
-      <View style={styles.section}>
-        <View style={styles.rowBetween}>
-          <Text style={styles.label}>Username</Text>
-          <Pressable onPress={() => setEditMode(true)}>
-            <Ionicons name="pencil" size={18} color={theme.muted} />
-          </Pressable>
+
+        {/* TAB CONTENT */}
+        <View style={{ flex: 1, marginTop: 10 }}>
+          {activeTab === "posts" ? (
+            <>
+              <FlatList
+                data={myposts}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => (
+                  <MyProfilePostContent
+                    post={item}
+                    openCommentsAction={openComments}
+                  />
+                )}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{ paddingBottom: 100 }}
+                ListEmptyComponent={
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Text>No Posts Yet!</Text>
+                  </View>
+                }
+              />
+
+              <CommentViewer
+                isVisible={isModalVisible}
+                onClose={onModalClose}
+                commentList={commentList}
+                postId={openPostId}
+              />
+            </>
+          ) : (
+            <>
+              <FlatList
+                data={savedposts}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => (
+                  <MyProfilePostContent
+                    post={item}
+                    openCommentsAction={openComments}
+                  />
+                )}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{ paddingBottom: 100 }}
+                ListEmptyComponent={
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Text>No Saved Posts Yet!</Text>
+                  </View>
+                }
+              />
+
+              <CommentViewer
+                isVisible={isModalVisible}
+                onClose={onModalClose}
+                commentList={commentList}
+                postId={openPostId}
+              />
+            </>
+          )}
         </View>
-
-        {editMode ? (
-          <TextInput
-            value={editedUsername}
-            onChangeText={setEditedUsername}
-            style={styles.input}
-          />
-        ) : (
-          <Text style={styles.value}>{editedUsername}</Text>
-        )}
-      </View>
-
-      <View style={styles.section}>
-        <View style={styles.rowBetween}>
-          <Text style={styles.label}>Bio</Text>
-          <Pressable onPress={() => setEditMode(true)}>
-            <Ionicons name="pencil" size={18} color={theme.muted} />
-          </Pressable>
-        </View>
-
-        {editMode ? (
-          <TextInput
-            value={description}
-            onChangeText={setDescription}
-            multiline
-            style={[styles.input, { height: 80 }]}
-          />
-        ) : (
-          <Text style={styles.value}>{description || "No bio added"}</Text>
-        )}
-      </View>
-      {/* TAB BUTTONS */}
-      <View style={styles.tabBar}>
-        <Pressable onPress={() => setActiveTab("posts")} style={styles.tabItem}>
-          <Text
-            style={[
-              styles.tabText,
-              activeTab === "posts" && styles.tabActiveText,
-            ]}
-          >
-            My Posts
-          </Text>
-        </Pressable>
-
-        <Pressable onPress={() => setActiveTab("saved")} style={styles.tabItem}>
-          <Text
-            style={[
-              styles.tabText,
-              activeTab === "saved" && styles.tabActiveText,
-            ]}
-          >
-            Saved Posts
-          </Text>
-        </Pressable>
-      </View>
-
-      {/* TAB CONTENT */}
-      <View style={{ flex: 1, marginTop: 10 }}>
-        {activeTab === "posts" ? (
-          <>
-            <FlatList
-              data={myposts}
-              keyExtractor={(item) => item.id.toString()}
-              renderItem={({ item }) => (
-                <MyProfilePostContent
-                  post={item}
-                  openCommentsAction={openComments}
-                />
-              )}
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{ paddingBottom: 100 }}
-              ListEmptyComponent={
-                <View
-                  style={{
-                    flex: 1,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Text>No Posts Yet!</Text>
-                </View>
-              }
-            />
-
-            <CommentViewer
-              isVisible={isModalVisible}
-              onClose={onModalClose}
-              commentList={commentList}
-              postId={openPostId}
-            />
-          </>
-        ) : (
-          <>
-            <FlatList
-              data={savedposts}
-              keyExtractor={(item) => item.id.toString()}
-              renderItem={({ item }) => (
-                <MyProfilePostContent
-                  post={item}
-                  openCommentsAction={openComments}
-                />
-              )}
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{ paddingBottom: 100 }}
-              ListEmptyComponent={
-                <View
-                  style={{
-                    flex: 1,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Text>No Saved Posts Yet!</Text>
-                </View>
-              }
-            />
-
-            <CommentViewer
-              isVisible={isModalVisible}
-              onClose={onModalClose}
-              commentList={commentList}
-              postId={openPostId}
-            />
-          </>
-        )}
-      </View>
-    </View>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 
@@ -501,6 +510,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.bg,
     padding: 16,
+    marginTop: 20,
   },
 
   header: {

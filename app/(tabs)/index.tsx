@@ -9,9 +9,9 @@ import {
   FlatList,
   StyleSheet,
   TextInput,
-  TextInputChangeEvent,
-  View,
+  TextInputChangeEvent
 } from "react-native";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useAuth } from "../(context)/Authcontext";
 
 export default function Index() {
@@ -61,35 +61,37 @@ export default function Index() {
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: theme.bg,
-      }}
-    >
-      {/* Filter Bar*/}
-      <TextInput
-        style={styles.filterBar}
-        placeholder="Filter by tags here..."
-        value={search}
-        onChange={handleSearch}
-      />
-      <FlatList
-        style={styles.postList}
-        data={data}
-        renderItem={({ item }) => (
-          <PostContent post={item} openCommentsAction={openComments} />
-        )}
-      />
-      <CommentViewer
-        isVisible={isModalVisible}
-        onClose={onModalClose}
-        commentList={commentList}
-        postId={openPostId}
-      ></CommentViewer>
-    </View>
+    <SafeAreaProvider>
+      <SafeAreaView
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: theme.bg,
+        }}
+      >
+        {/* Filter Bar*/}
+        <TextInput
+          style={styles.filterBar}
+          placeholder="Filter by tags here..."
+          value={search}
+          onChange={handleSearch}
+        />
+        <FlatList
+          style={styles.postList}
+          data={data}
+          renderItem={({ item }) => (
+            <PostContent post={item} openCommentsAction={openComments} />
+          )}
+        />
+        <CommentViewer
+          isVisible={isModalVisible}
+          onClose={onModalClose}
+          commentList={commentList}
+          postId={openPostId}
+        ></CommentViewer>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 

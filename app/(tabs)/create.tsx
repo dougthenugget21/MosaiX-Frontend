@@ -1,18 +1,25 @@
 import ImageViewer from "@/components/ImageUpload";
-import LocationButton from "@/components/LocationButton";
 import SubmitButton from "@/components/SubmitButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
+import { ImagePickerAsset } from "expo-image-picker";
 import * as Location from "expo-location";
 import { useState } from "react";
-import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-
 export default function Create() {
-  const [selectImage, setSelectedImage] = useState<string | undefined>(
-    undefined,
-  );
-  const [imageFile, setImageFile] = useState<File | undefined>(undefined);
+  const [actualyImage, setActualyImage] = useState<
+    ImagePickerAsset | undefined
+  >();
+  const [selectImage, setSelectedImage] = useState("");
+  const [imageFile, setImageFile] = useState<any>(undefined);
 
   const [titleText, setTitleText] = useState("");
   const [tagText, setTagText] = useState("");
@@ -31,6 +38,7 @@ export default function Create() {
     });
 
     if (!result.canceled) {
+      setActualyImage(result.assets[0]);
       setSelectedImage(result.assets[0].uri);
       setImageFile(result.assets[0].file);
     } else {
@@ -50,11 +58,23 @@ export default function Create() {
     return location;
   };
 
-  const uploadFile = async (imageFile: File) => {
+  const uploadFile = async (img: File) => {
     const formData = new FormData();
-    formData.append("file", imageFile);
+    console.log(Platform.OS);
+    if (Platform.OS === "web") {
+      console.log("this is running");
+      formData.append("file", img);
+    } else {
+      formData.append("file", {
+        uri: selectImage,
+        type: actualyImage?.mimeType,
+        name: actualyImage?.fileName,
+      } as any);
+    }
+
     formData.append("upload_preset", "mosaix");
 
+    console.log(formData);
     const response = await fetch(
       `https://api.cloudinary.com/v1_1/${process.env.EXPO_PUBLIC_CLOUDINARY_KEY}/upload`,
       {
@@ -81,7 +101,7 @@ export default function Create() {
         throw new Error("You must add a description to create a post");
       }
 
-      if (imageFile !== undefined) {
+      if (selectImage !== undefined) {
         const imageUrl = await uploadFile(imageFile);
         const loc = await getCurrentLocation();
         const profileID = await AsyncStorage.getItem("profile_id");
@@ -94,7 +114,7 @@ export default function Create() {
           post_desc: descText,
           tags: tagText.toLowerCase(),
         });
-
+        console.log("before cloudanary");
         const response = await fetch(
           `${process.env.EXPO_PUBLIC_CREATE_POST_URL}`,
           {
@@ -105,6 +125,7 @@ export default function Create() {
             body: postBody,
           },
         );
+        console.log("after cloud");
         console.log(response);
         resetPage();
       } else {
@@ -112,6 +133,7 @@ export default function Create() {
       }
     } catch (err) {
       alert(err);
+      console.log(err);
     }
   };
 
@@ -119,7 +141,7 @@ export default function Create() {
     setTitleText("");
     setDescText("");
     setTagText("");
-    setSelectedImage(undefined);
+    setSelectedImage("");
     setImageFile(undefined);
     alert("Post successfully created!");
   };
@@ -159,13 +181,6 @@ export default function Create() {
                 imgSource={placeholderImg}
                 selectedImage={selectImage}
                 onPress={pickImageAsync}
-              />
-            </View>
-            <View style={styles.inputOuter}>
-              <Text style={styles.inputLable}>Choose your Location</Text>
-              <LocationButton
-                onPressCurrent={testing}
-                onPressSelect={testing}
               />
             </View>
             <View style={styles.inputOuter}>
@@ -215,7 +230,6 @@ const theme = {
 
 const styles = StyleSheet.create({
   scrollView: {
-    flex: 1,
     alignItems: "center",
   },
   container: {
