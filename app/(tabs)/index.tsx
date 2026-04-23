@@ -12,7 +12,8 @@ import {
   Image,
   StyleSheet,
   TextInput,
-  TextInputChangeEvent
+  TextInputChangeEvent,
+  View,
 } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useAuth } from "../(context)/Authcontext";
@@ -75,20 +76,20 @@ export default function Index() {
         }}
       >
         {/* Filter Bar*/}
-<View style={styles.header}>
-        <Image source={logo} style={styles.logo} resizeMode="contain" />
+        <View style={styles.header}>
+          <Image source={logo} style={styles.logo} resizeMode="contain" />
 
-        <View style={styles.searchBar}>
-          <Ionicons name="search" size={18} color="#7A869A" />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search tags..."
-            placeholderTextColor="#7A869A"
-            value={search}
-            onChange={handleSearch}
-          />
+          <View style={styles.searchBar}>
+            <Ionicons name="search" size={18} color="#7A869A" />
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Search tags..."
+              placeholderTextColor="#7A869A"
+              value={search}
+              onChange={handleSearch}
+            />
+          </View>
         </View>
-      </View>
         <FlatList
           style={styles.postList}
           data={data}

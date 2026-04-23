@@ -14,7 +14,6 @@ import {
   FlatList,
   Image,
   Pressable,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -298,10 +297,6 @@ export default function Profile() {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
-        <ScrollView
-        style={styles.scrollView}
-        showsVerticalScrollIndicator={false}
-      >
         <View style={styles.logoutSection}>
           <Pressable
             onPress={async () => {
@@ -494,8 +489,7 @@ export default function Profile() {
             </>
           )}
         </View>
-      </ScrollView>
-        </SafeAreaView>
+      </SafeAreaView>
     </SafeAreaProvider>
   );
 }
