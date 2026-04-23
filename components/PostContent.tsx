@@ -44,17 +44,19 @@ const theme = {
 const styles = StyleSheet.create({
   contentContainer: {
     display: "flex",
-    margin: 6,
-    borderWidth: 0,
-    borderColor: theme.card,
+    margin: "auto",
+    marginTop: 20,
+    width: "90%",
+    borderWidth: 2,
+    borderColor: theme.muted,
     backgroundColor: theme.card,
     borderRadius: 20,
     paddingBottom: 5,
   },
   titlePicContainer: {
-    backgroundColor: theme.card,
     borderRadius: 14,
     paddingTop: 3,
+    backgroundColor: theme.muted,
   },
   textContainer: {
     display: "flex",
@@ -71,7 +73,7 @@ const styles = StyleSheet.create({
   postTitleText: {
     fontSize: 20,
     fontWeight: 400,
-    color: theme.text,
-    paddingLeft: 5,
+    color: theme.card,
+    paddingLeft: 10,
   },
 });

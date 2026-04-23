@@ -10,11 +10,7 @@ export default function submitButton({ onPress, text }: Props) {
   return (
     <Pressable onPress={onPress} style={styles.outterButton}>
       <Text style={styles.buttonText}>{text}</Text>
-      <MaterialIcons
-        name="add-circle-outline"
-        size={24}
-        color={theme.primary}
-      />
+      <MaterialIcons name="add-circle-outline" size={24} color={theme.card} />
     </Pressable>
   );
 }
@@ -35,10 +31,10 @@ const styles = StyleSheet.create({
     width: "60%",
     borderRadius: 20,
     borderWidth: 3,
-    borderColor: theme.border,
+    borderColor: theme.cardSoft,
     padding: 10,
     paddingHorizontal: 50,
-    backgroundColor: theme.cardSoft,
+    backgroundColor: theme.muted,
     flexDirection: "row",
     justifyContent: "center",
     gap: 10,
@@ -47,7 +43,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   buttonText: {
-    color: theme.primary,
+    color: theme.card,
     fontWeight: 500,
     fontSize: 18,
     alignContent: "center",
