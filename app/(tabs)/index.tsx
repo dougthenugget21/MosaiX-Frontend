@@ -12,9 +12,9 @@ import {
   Image,
   StyleSheet,
   TextInput,
-  TextInputChangeEvent,
-  View,
+  TextInputChangeEvent
 } from "react-native";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useAuth } from "../(context)/Authcontext";
 
 export default function Index() {
@@ -65,23 +65,17 @@ export default function Index() {
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: theme.bg,
-      }}
-    >
-      {/* Filter Bar - old
-      <TextInput
-        style={styles.filterBar}
-        placeholder="Filter by tags here..."
-        value={search}
-        onChange={handleSearch}
-      />
-      */}
-      <View style={styles.header}>
+    <SafeAreaProvider>
+      <SafeAreaView
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: theme.bg,
+        }}
+      >
+        {/* Filter Bar*/}
+<View style={styles.header}>
         <Image source={logo} style={styles.logo} resizeMode="contain" />
 
         <View style={styles.searchBar}>
@@ -95,20 +89,21 @@ export default function Index() {
           />
         </View>
       </View>
-      <FlatList
-        style={styles.postList}
-        data={data}
-        renderItem={({ item }) => (
-          <PostContent post={item} openCommentsAction={openComments} />
-        )}
-      />
-      <CommentViewer
-        isVisible={isModalVisible}
-        onClose={onModalClose}
-        commentList={commentList}
-        postId={openPostId}
-      ></CommentViewer>
-    </View>
+        <FlatList
+          style={styles.postList}
+          data={data}
+          renderItem={({ item }) => (
+            <PostContent post={item} openCommentsAction={openComments} />
+          )}
+        />
+        <CommentViewer
+          isVisible={isModalVisible}
+          onClose={onModalClose}
+          commentList={commentList}
+          postId={openPostId}
+        ></CommentViewer>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 

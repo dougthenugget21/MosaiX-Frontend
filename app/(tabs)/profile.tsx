@@ -20,6 +20,7 @@ import {
   TextInput,
   View,
 } from "react-native";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 type ProfileData = {
   user_name: string;
@@ -295,8 +296,9 @@ export default function Profile() {
   }
 
   return (
-    <View style={styles.container}>
-      <ScrollView
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container}>
+        <ScrollView
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
       >
@@ -493,7 +495,8 @@ export default function Profile() {
           )}
         </View>
       </ScrollView>
-    </View>
+        </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 
@@ -513,6 +516,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.bg,
     padding: 16,
+    marginTop: 20,
   },
 
   header: {

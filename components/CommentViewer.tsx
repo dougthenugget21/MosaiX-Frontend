@@ -117,6 +117,7 @@ const styles = StyleSheet.create({
     padding: 4,
     borderTopWidth: 1,
     borderColor: theme.muted,
+    height: "15%",
   },
   commentInput: {
     flex: 1,
