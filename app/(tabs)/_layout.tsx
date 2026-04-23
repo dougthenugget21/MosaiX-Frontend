@@ -9,8 +9,8 @@ export default function TabLayout() {
     <AuthProvider>
       <Tabs
         screenOptions={{
-          tabBarActiveTintColor: "#3D5A80",
-          tabBarInactiveTintColor: "#3a3f46",
+          tabBarActiveTintColor: "#166534",
+          tabBarInactiveTintColor: "#4B5B52",
         }}
       >
         <Tabs.Screen

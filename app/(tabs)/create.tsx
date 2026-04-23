@@ -1,5 +1,4 @@
 import ImageViewer from "@/components/ImageUpload";
-import LocationButton from "@/components/LocationButton";
 import SubmitButton from "@/components/SubmitButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
@@ -142,57 +141,61 @@ export default function Create() {
             <Text role="heading" style={styles.header}>
               Create your own Post
             </Text>
-            <View style={styles.inputOuter}>
-              <Text style={styles.inputLable}>Give your post a title</Text>
-              <TextInput
-                value={titleText}
-                style={styles.innerBox}
-                maxLength={255}
-                onChangeText={(newText) => setTitleText(newText)}
-                placeholder={`Title...`}
-                placeholderTextColor={"#6c6c6cff"}
-              />
-            </View>
-            <View style={styles.inputOuter}>
-              <Text style={styles.inputLable}>Select an image</Text>
-              <ImageViewer
-                imgSource={placeholderImg}
-                selectedImage={selectImage}
-                onPress={pickImageAsync}
-              />
-            </View>
-            <View style={styles.inputOuter}>
+            <View style={styles.innerCont}>
+              <View style={styles.titlePicCont}>
+                <View style={styles.inputOuter}>
+                  <Text style={styles.inputLable}>Give your post a title</Text>
+                  <TextInput
+                    value={titleText}
+                    style={styles.innerBox}
+                    maxLength={255}
+                    onChangeText={(newText) => setTitleText(newText)}
+                    placeholder={`Title...`}
+                    placeholderTextColor={"#6c6c6cff"}
+                  />
+                </View>
+                <View style={styles.inputOuter}>
+                  <Text style={styles.inputLable}>Select an image</Text>
+                  <ImageViewer
+                    imgSource={placeholderImg}
+                    selectedImage={selectImage}
+                    onPress={pickImageAsync}
+                  />
+                </View>
+              </View>
+              {/* <View style={styles.inputOuter}>
               <Text style={styles.inputLable}>Choose your Location</Text>
               <LocationButton
                 onPressCurrent={testing}
                 onPressSelect={testing}
               />
-            </View>
-            <View style={styles.inputOuter}>
-              <Text style={styles.inputLable}>Tag your post</Text>
-              <TextInput
-                value={tagText}
-                style={styles.innerBox}
-                maxLength={255}
-                onChangeText={(newText) => setTagText(newText)}
-                placeholder={`Insert tags, e.g: History,Nature,Food...`}
-                placeholderTextColor={"#6c6c6cff"}
-              />
-            </View>
-            <View style={styles.inputOuter}>
-              <Text style={styles.inputLable}>
-                Give your post a description
-              </Text>
-              <TextInput
-                value={descText}
-                multiline
-                numberOfLines={5}
-                maxLength={255}
-                style={[styles.descBox, styles.innerBox]}
-                onChangeText={(newText) => setDescText(newText)}
-                placeholder={`Description...`}
-                placeholderTextColor={"#6c6c6cff"}
-              />
+            </View> */}
+              <View style={styles.inputOuter}>
+                <Text style={styles.inputLable}>
+                  Give your post a description
+                </Text>
+                <TextInput
+                  value={descText}
+                  multiline
+                  numberOfLines={5}
+                  maxLength={255}
+                  style={[styles.descBox, styles.innerBox]}
+                  onChangeText={(newText) => setDescText(newText)}
+                  placeholder={`Description...`}
+                  placeholderTextColor={"#6c6c6cff"}
+                />
+              </View>
+              <View style={styles.inputOuter}>
+                <Text style={styles.inputLable}>Tag your post</Text>
+                <TextInput
+                  value={tagText}
+                  style={styles.innerBox}
+                  maxLength={255}
+                  onChangeText={(newText) => setTagText(newText)}
+                  placeholder={`Insert tags, e.g: History,Nature,Food...`}
+                  placeholderTextColor={"#6c6c6cff"}
+                />
+              </View>
             </View>
             <SubmitButton onPress={submit} text="Submit" />
           </View>
@@ -224,6 +227,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     maxWidth: 600,
   },
+  titlePicCont: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    backgroundColor: theme.muted,
+    borderRadius: 14,
+    paddingBottom: 5,
+  },
+  innerCont: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: "90%",
+    borderWidth: 3,
+    borderRadius: 20,
+    borderColor: theme.muted,
+    backgroundColor: theme.card,
+    paddingBottom: 10,
+  },
   header: {
     fontSize: 25,
     fontWeight: 500,
@@ -239,11 +260,11 @@ const styles = StyleSheet.create({
     fontWeight: 500,
   },
   inputOuter: {
-    backgroundColor: theme.card,
+    backgroundColor: theme.cardSoft,
     borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
-    width: "90%",
+    width: "96%",
     marginTop: 10,
   },
   innerBox: {

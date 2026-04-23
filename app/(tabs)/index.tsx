@@ -146,12 +146,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     backgroundColor: theme.bg,
     zIndex: 10,
-    borderBottomColor: theme.border,
+    borderBottomWidth: 2,
+    borderBottomColor: theme.muted,
+    width: "100%",
   },
 
   logo: {
-    width: 90,
-    height: 40,
+    width: "30%",
+    maxWidth: 150,
+    aspectRatio: 9 / 4,
   },
 
   searchBar: {

@@ -22,7 +22,8 @@ const styles = StyleSheet.create({
     borderRadius: 14,
   },
   imageContainer: {
-    width: "100%",
+    width: "auto",
+    margin: 5,
     aspectRatio: "1/1",
   },
 });
