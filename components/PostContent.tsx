@@ -23,11 +23,7 @@ export default function postContent({ post, openCommentsAction }: Props) {
           <Text>{post.description}</Text>
           <PostTags tags={post.tags}></PostTags>
         </View>
-        <PostActions
-          post={post}
-          modelOn={openCommentsAction}
-          navOnClick={navAction}
-        />
+        <PostActions post={post} modelOn={openCommentsAction} />
       </View>
     </View>
   );
