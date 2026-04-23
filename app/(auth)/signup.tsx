@@ -1,8 +1,10 @@
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { router } from "expo-router";
-import { useAuth } from "../../app/(context)/Authcontext";
+import { useAuth } from "../(context)/Authcontext";
 
 import { useState } from "react";
 import {
+  Image,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -19,6 +21,7 @@ export default function SignUp() {
   const API_URL = "https://mosaix-backend.onrender.com/userProfile/create";
   //const API_URL = "http://localhost:3000/userProfile/create";
   const { login } = useAuth();
+  const logo = require("../../assets/images/logo.png");
 
   const handleSignUp = async () => {
     try {
@@ -67,6 +70,13 @@ export default function SignUp() {
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
       <View style={styles.content}>
+        <View style={styles.logo}>
+          {logo ? (
+            <Image source={logo} style={styles.logoImage} />
+          ) : (
+            <Ionicons name="person" size={50} color={theme.muted} />
+          )}
+        </View>
         <Text style={styles.title}>Create account</Text>
         <Text style={styles.subtitle}>Sign up to get started</Text>
 
@@ -204,5 +214,18 @@ const styles = StyleSheet.create({
     color: theme.primary,
     fontSize: 14,
     fontWeight: "600",
+  },
+  logo: {
+    width: 200,
+    height: 150,
+    borderRadius: 55,
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
+    marginTop: 80,
+  },
+  logoImage: {
+    width: "100%",
+    height: "50%",
   },
 });

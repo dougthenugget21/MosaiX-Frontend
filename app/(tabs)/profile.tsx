@@ -5,7 +5,7 @@ import CommentViewer from "@/components/CommentViewer";
 import MyProfilePostContent from "@/components/MyProfilePostContent";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import * as ImagePicker from "expo-image-picker";
-import { useFocusEffect } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import { useCallback, useState } from "react";
 import { useAuth } from "../(context)/Authcontext";
 
@@ -81,6 +81,18 @@ export default function Profile() {
       setAvatar(data.profilephoto_url || null);
 
       //  MY POSTS
+      await LoadMyPosts();
+      //  SAVED POSTS
+      await LoadSavedPosts();
+    } catch {
+      Alert.alert("Error", "Could not load profile");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const LoadMyPosts = async () => {
+    try {
       const resMyPosts = await fetch(
         `https://mosaix-backend.onrender.com/posts/profile/${profileId}`,
         {
@@ -89,13 +101,23 @@ export default function Profile() {
       );
 
       if (!resMyPosts.ok) {
-        throw new Error("Failed to load posts. Please try again later!");
+        if (resMyPosts.status === 500) {
+          setMyPosts([]);
+        } else {
+          throw new Error("Failed to load posts. Please try again later!");
+        }
+        return;
       }
 
       const datamypost = await resMyPosts.json();
       setMyPosts(parsePostData(datamypost));
+    } catch (e) {
+      console.error("Loading My Posts failed:", e);
+    }
+  };
 
-      //  SAVED POSTS
+  const LoadSavedPosts = async () => {
+    try {
       const resSavedPosts = await fetch(
         `https://mosaix-backend.onrender.com/posts/saved/${profileId}`,
         {
@@ -104,15 +126,18 @@ export default function Profile() {
       );
 
       if (!resSavedPosts.ok) {
-        throw new Error("Failed to load posts. Please try again later!");
+        if (resSavedPosts.status === 500) {
+          setSavedPosts([]);
+        } else {
+          throw new Error("Failed to load posts. Please try again later!");
+        }
+        return;
       }
 
       const datasavedpost = await resSavedPosts.json();
       setSavedPosts(parsePostData(datasavedpost));
-    } catch {
-      Alert.alert("Error", "Could not load profile");
-    } finally {
-      setLoading(false);
+    } catch (e) {
+      console.error("Loading Saved Posts failed:", e);
     }
   };
 
@@ -258,7 +283,13 @@ export default function Profile() {
   return (
     <View style={styles.container}>
       <View style={styles.logoutSection}>
-        <Pressable onPress={logout} style={styles.logoutButton}>
+        <Pressable
+          onPress={async () => {
+            await logout();
+            router.replace("/(auth)/login");
+          }}
+          style={styles.logoutButton}
+        >
           <Ionicons name="log-out-outline" size={20} color={theme.muted} />
           <Text style={styles.logoutText}>Logout</Text>
         </Pressable>
@@ -376,6 +407,17 @@ export default function Profile() {
               )}
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{ paddingBottom: 100 }}
+              ListEmptyComponent={
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text>No Posts Yet!</Text>
+                </View>
+              }
             />
 
             <CommentViewer
@@ -398,12 +440,24 @@ export default function Profile() {
               )}
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{ paddingBottom: 100 }}
+              ListEmptyComponent={
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text>No Saved Posts Yet!</Text>
+                </View>
+              }
             />
 
             <CommentViewer
               isVisible={isModalVisible}
               onClose={onModalClose}
               commentList={commentList}
+              postId={openPostId}
             />
           </>
         )}

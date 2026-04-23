@@ -1,6 +1,9 @@
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { router } from "expo-router";
 import { useState } from "react";
+
 import {
+  Image,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -14,6 +17,8 @@ import { useAuth } from "../(context)/Authcontext";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const logo = require("../../assets/images/logo.png");
+
   const API_URL = "https://mosaix-backend.onrender.com/userProfile/login";
   // const API_URL = "http://localhost:3000/userProfile/login";
   const { login } = useAuth();
@@ -71,6 +76,13 @@ export default function Login() {
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
+      <View style={styles.logo}>
+        {logo ? (
+          <Image source={logo} style={styles.logoImage} />
+        ) : (
+          <Ionicons name="person" size={50} color={theme.muted} />
+        )}
+      </View>
       <View style={styles.content}>
         <Text style={styles.title}>Welcome back</Text>
         <Text style={styles.subtitle}>Log in to continue</Text>
@@ -199,5 +211,18 @@ const styles = StyleSheet.create({
     color: theme.primary,
     fontSize: 14,
     fontWeight: "600",
+  },
+  logo: {
+    width: 200,
+    height: 150,
+    borderRadius: 55,
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
+    marginTop: 80,
+  },
+  logoImage: {
+    width: "100%",
+    height: "50%",
   },
 });
