@@ -4,9 +4,12 @@ import Post from "@/assets/logic/Post";
 import PostComment from "@/assets/logic/PostComment";
 import CommentViewer from "@/components/CommentViewer";
 import PostContent from "@/components/PostContent";
+import Ionicons from "@expo/vector-icons/Ionicons";
+
 import { useEffect, useState } from "react";
 import {
   FlatList,
+  Image,
   StyleSheet,
   TextInput,
   TextInputChangeEvent
@@ -22,6 +25,7 @@ export default function Index() {
   const [commentList, setCommentList] = useState<PostComment[]>([]);
   const [openPostId, setOpenPostId] = useState<number>(-1);
   const { profileId } = useAuth();
+  const logo = require("../../assets/images/logo.png");
   useEffect(() => {
     const fetchData = async () => {
       const temp = await getPostsByLocation(profileId);
@@ -71,12 +75,20 @@ export default function Index() {
         }}
       >
         {/* Filter Bar*/}
-        <TextInput
-          style={styles.filterBar}
-          placeholder="Filter by tags here..."
-          value={search}
-          onChange={handleSearch}
-        />
+<View style={styles.header}>
+        <Image source={logo} style={styles.logo} resizeMode="contain" />
+
+        <View style={styles.searchBar}>
+          <Ionicons name="search" size={18} color="#7A869A" />
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search tags..."
+            placeholderTextColor="#7A869A"
+            value={search}
+            onChange={handleSearch}
+          />
+        </View>
+      </View>
         <FlatList
           style={styles.postList}
           data={data}
@@ -110,7 +122,7 @@ const styles = StyleSheet.create({
   filterBar: {
     width: "100%",
     maxWidth: 600,
-    padding: 5,
+    padding: 20,
     backgroundColor: theme.card,
     borderRadius: 6,
     margin: 8,
@@ -120,5 +132,40 @@ const styles = StyleSheet.create({
     display: "flex",
     maxWidth: 600,
     width: "100%",
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    height: 70,
+    paddingHorizontal: 12,
+    backgroundColor: theme.bg,
+    zIndex: 10,
+    borderBottomColor: theme.border,
+  },
+
+  logo: {
+    width: 90,
+    height: 40,
+  },
+
+  searchBar: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: theme.card,
+    borderRadius: 14,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    marginLeft: 60,
+    borderWidth: 1,
+    borderColor: theme.border,
+  },
+
+  searchInput: {
+    flex: 1,
+    marginLeft: 6,
+    fontSize: 14,
+    color: theme.text,
   },
 });
