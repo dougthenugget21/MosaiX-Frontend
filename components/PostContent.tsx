@@ -13,7 +13,7 @@ type Props = {
 export default function postContent({ post, openCommentsAction }: Props) {
   return (
     <View style={styles.contentContainer}>
-      <View style={styles.titlePicContainer}>
+      <View>
         <Text style={styles.postTitleText}>{post.title}</Text>
         <PostImage imgSource={post.image} />
       </View>
@@ -52,6 +52,8 @@ const styles = StyleSheet.create({
     backgroundColor: theme.card,
     borderRadius: 20,
     paddingBottom: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 4,
   },
   titlePicContainer: {
     borderRadius: 14,
@@ -67,13 +69,14 @@ const styles = StyleSheet.create({
     backgroundColor: theme.cardSoft,
     borderRadius: 14,
     marginVertical: 5,
-    paddingHorizontal: 5,
+    paddingHorizontal: 15,
+    paddingVertical: 5,
   },
   descriptionText: {},
   postTitleText: {
     fontSize: 20,
-    fontWeight: 400,
-    color: theme.card,
+    fontWeight: 500,
+    color: theme.primary,
     paddingLeft: 10,
   },
 });

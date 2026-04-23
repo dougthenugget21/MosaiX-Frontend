@@ -253,7 +253,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-    backgroundColor: theme.muted,
     borderRadius: 14,
     paddingBottom: 5,
   },
@@ -266,6 +265,7 @@ const styles = StyleSheet.create({
     borderColor: theme.muted,
     backgroundColor: theme.card,
     paddingBottom: 10,
+    paddingHorizontal: 3,
   },
   header: {
     fontSize: 25,
