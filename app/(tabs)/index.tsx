@@ -42,8 +42,9 @@ export default function Index() {
     if (term === "") {
       setData(await getPostsByLocation(profileId));
     } else {
+      const formattedTerm = term.toLowerCase();
       const filteredArray = data.filter((item) => {
-        const results = item.tags.filter((tag) => tag.includes(term));
+        const results = item.tags.filter((tag) => tag.includes(formattedTerm));
         if (results.length > 0) {
           return true;
         } else {

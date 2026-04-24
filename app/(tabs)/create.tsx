@@ -112,7 +112,7 @@ export default function Create() {
           latitude: loc.coords.latitude,
           post_title: titleText,
           post_desc: descText,
-          tags: tagText.toLowerCase(),
+          tags: tagText.toLowerCase().replaceAll(" ", ""),
         });
         console.log("before cloudanary");
         const response = await fetch(
